@@ -1,0 +1,82 @@
+/* Header Icons Styles */
+.icon_search i,
+.img_hover_cart i {
+  color: #fff;
+}
+
+.input-group-btn button i {
+  color: #fff;
+}
+
+/* Hover effect */
+.icon_search i:hover,
+.img_hover_cart i:hover {
+  color: #ff6b6b;
+}
+:root {
+  --main-color: #f5af1a;
+  --font-base: 'Baloo Paaji 2', cursive;
+  ;
+  --font-title: 'Baloo Bhaina 2', cursive;
+  --hover: #f4c70f;
+  --text-color: #272625;
+  --price: #272625;
+  --hover: #f4c70f;
+  --menu: #ff8ea6;
+  --bgcopoun: #ffeef2;
+  --bgbestsale: #f8f8f8;
+  --bgmailchip: #ffeef2;
+}
+
+/* --- MENU MOBILE RESPONSIVE --- */
+@media (max-width: 991px) {
+  .menu_mobile .nav-horizontal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: auto; bottom: 0;
+    background: #fff;
+    z-index: 200;
+    width: 80vw;
+    max-width: 320px;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+    transform: translateX(-100%);
+  }
+  .menu_mobile.open .nav-horizontal {
+    display: block;
+    transform: translateX(0);
+  }
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 150;
+  }
+  .menu-bar-mobile {
+    display: block !important;
+    cursor: pointer;
+    z-index: 300;
+  }
+  .mobile-menu-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 16px 0 0;
+  }
+  .close-mobile-menu {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #333;
+    line-height: 1;
+  }
+}
+@media (min-width: 992px) {
+  .menu-bar-mobile {
+    display: none !important;
+  }
+}
+

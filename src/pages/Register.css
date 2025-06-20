@@ -1,0 +1,89 @@
+.register-breadcrumb {
+    font-family: 'Baloo Paaji 2', cursive;
+    margin: 0;
+    font-size: 14px;
+    padding: 15px 0px;
+    border-radius: 0;
+    font-weight: 400;
+    line-height: 24px;
+    width: 100%;
+    float: left;
+    text-align: left;
+    display: block;
+}
+.register-breadcrumb li {
+    display: inline;
+} 
+.register-breadcrumb li strong {
+    color: var(--main-color);
+    font-weight: 400;
+    text-decoration: none;
+}
+
+#register {
+    margin-left: 33.333333%;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+.register-bread-crumb {
+    display: block;
+    margin-bottom: 30px;
+}
+ .register-form-group label {
+    margin-top: 0px;
+    /* font-family: var(--font-base); */
+    font-weight: 700;
+    color: #272625;
+    font-size: 14px;
+}
+.register-form-group label span {
+    color: #ff0000;
+}
+.register-page-login .register-btn_50 {
+    /* font-family: var(--font-base); */
+    color: #fff;
+    background: #f5af1a;
+    border: solid 1px #f5af1a;
+    font-size: 13px;
+    text-transform: uppercase;
+    line-height: 40px;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 0 20px;
+    border-radius: 0;
+    height: 40px;
+}
+.register-page-login .register-btn_50:hover {
+    background: #272625;
+    color: #fff;
+    border-color: #272625;
+}
+.register-or{
+        font-size: 14px;
+    float: left;
+    margin-right: 10px;
+    line-height: 45px;
+}
+.register-or a{
+    padding-left: 3px;
+    text-decoration: underline;
+    color: #ff0000;
+}
+.register-social-login--facebooks{
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+.register-social-login--facebooks img{
+    margin-right: 3px;
+}
+.register-wrapperMain_content {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 75px;
+    margin-right: auto;
+    margin-left: auto;
+}

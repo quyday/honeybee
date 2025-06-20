@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/logo/logo-honey.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="%PUBLIC_URL%/logo/logo-honey.png" />
+  <link rel="icon" type="image/png" sizes="128x128" href="%PUBLIC_URL%/logo/logo-honey.png" />
+  <link rel="icon" type="image/png" sizes="256x256" href="%PUBLIC_URL%/logo/logo-honey.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <meta name="keywords"
+    content="mật ong thiên nhiên, mật ong rừng, mật ong hoa, mật ong nguyên chất, Template Honey Bee" />
+
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tất cả sản phẩm">
+  <meta property="og:image" content="../images/slider_1.jpg">
+  <meta property="og:image:secure_url" content="../images/slider_1.jpg">
+
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://template-honey-bee.mysapo.net/collections/all">
+  <meta property="og:site_name" content="Template Honey Bee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;600;700&family=Baloo+Paaji+2:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #f5af1a;
+      --font-base: 'Baloo Paaji 2', cursive;
+      --font-title: 'Baloo Bhaina 2', cursive;
+      --hover: #f4c70f;
+      --text-color: #272625;
+      --price: #272625;
+      --menu: #ff8ea6;
+      --bgcopoun: #ffeef2;
+      --bgbestsale: #f8f8f8;
+      --bgmailchip: #ffeef2;
+    }
+  </style>
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/plugin-css.scss.css?1729245409661" rel="stylesheet"
+    type="text/css" media="all" />
+  <link rel="preload" as='style'
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/swiper-style.scss.css?1729245409661">
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/swiper-style.scss.css?1729245409661" rel="stylesheet"
+    type="text/css" media="all" />
+
+  <link rel="preload" as='style'
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/menu-mobile.scss.css?1729245409661">
+  <link rel="preload" as='style'
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/main.scss.css?1729245409661">
+  <link rel="preload" as='style'
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/header.scss.css?1729245409661">
+
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/menu-mobile.scss.css?1729245409661" rel="stylesheet"
+    type="text/css" media="all" />
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/main.scss.css?1729245409661" rel="stylesheet"
+    type="text/css" media="all" />
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/header.scss.css?1729245409661" rel="stylesheet"
+    type="text/css" media="all" />
+
+  <link rel="preload" as='style' type="text/css"
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/sidebar_style.scss.css?1729245409661">
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/sidebar_style.scss.css?1729245409661"
+    rel="stylesheet" type="text/css" media="all" />
+  <link rel="preload" as='style' type="text/css"
+    href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/collection_style.scss.css?1729245409661">
+  <link href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/collection_style.scss.css?1729245409661"
+    rel="stylesheet" type="text/css" media="all" />
+  <script type="text/javascript">
+    function addLoadEvent(e) {
+      if (document.readyState === "complete") {
+        e()
+      } else {
+        var t = window.onload;
+        if (typeof window.onload != "function") {
+          window.onload = e
+        } else {
+          window.onload = function () {
+            if (t) {
+              t()
+            }
+            e()
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    window.theme = window.theme || {};
+    var cartCount = 0;
+
+    theme.settings = {
+      moneyFormat: "{{amount_no_decimals_with_comma_separator}}₫",
+      urlpage_yeuthich: 'san-pham-yeu-thich',
+      urlColor: 'https://bizweb.dktcdn.net/100/320/490/files/bangmau.txt?v=1661854762957'
+    };
+  </script>
+  <script>
+    var Bizweb = Bizweb || {};
+    Bizweb.store = 'template-honey-bee.mysapo.net';
+    Bizweb.id = 472304;
+    Bizweb.theme = {
+      "id": 887048,
+      "name": "Honey Bee Farm 29-11-2022",
+      "role": "main"
+    };
+    Bizweb.template = 'collection';
+    if (!Bizweb.fbEventId) Bizweb.fbEventId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  </script>
+  <script>
+    (function () {
+      function asyncLoad() {
+        var urls = [];
+        for (var i = 0; i < urls.length; i++) {
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.async = true;
+          s.src = urls[i];
+          var x = document.getElementsByTagName('script')[0];
+          x.parentNode.insertBefore(s, x);
+        }
+      };
+      window.attachEvent ? window.attachEvent('onload', asyncLoad) : window.addEventListener('load', asyncLoad, false);
+    })();
+  </script>
+
+
+  <script>
+    window.BizwebAnalytics = window.BizwebAnalytics || {};
+    window.BizwebAnalytics.meta = window.BizwebAnalytics.meta || {};
+    window.BizwebAnalytics.meta.currency = 'VND';
+    window.BizwebAnalytics.tracking_url = '/s';
+
+    var meta = {};
+
+
+    for (var attr in meta) {
+      window.BizwebAnalytics.meta[attr] = meta[attr];
+    }
+  </script>
+
+
+  <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@id": "https://template-honey-bee.mysapo.net",
+                        "name": "Trang chủ"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                        "@id": "https://template-honey-bee.mysapo.net/collections/all",
+                        "name": "Tất cả sản phẩm"
+                    }
+                }
+            ]
+        }
+    </script>
+  <link rel="preload" as="image" href="../images/slider_1.jpg" media="screen and (max-width: 480px)">
+  <link rel="preload" as="image" href="../images/slider_1.jpg" media="screen and (min-width: 481px)">
+  <title>Quý Honey Bee</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preload" as="image"
+    href="//bizweb.dktcdn.net/thumb/large/100/472/304/themes/887048/assets/slider_1.jpg?1729245409661"
+    media="screen and (max-width: 480px)">
+  <link rel="preload" as="image" href="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/slider_1.jpg?1729245409661"
+    media="screen and (min-width: 481px)">
+  <script defer src="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/jquery-plugin.js?1729245409661"></script>
+  <script defer src="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/swiper-plugin.js?1729245409661"></script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
+
+</html>

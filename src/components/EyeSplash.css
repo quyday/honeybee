@@ -1,0 +1,103 @@
+.eye-splash-bg {
+  position: fixed;
+  z-index: 99999;
+  inset: 0;
+  background: #fffbe7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s;
+}
+
+.eye-splash-eyes {
+  display: flex;
+  gap: 60px;
+}
+
+.eye-splash-eye {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border: 3px solid #b8860b;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #ffe08255;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-ball {
+  width: 22px;
+  height: 22px;
+  background: #222;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -40%);
+  z-index: 2;
+  animation: eyeball-move 1.2s cubic-bezier(0.4,0.2,0.2,1) 1;
+}
+
+@keyframes eyeball-move {
+  0% { transform: translate(-50%, -40%) scale(0.7);}
+  30% { transform: translate(-50%, -40%) scale(1);}
+  100% { transform: translate(-50%, -40%) scale(1);}
+}
+
+.eye-lid {
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 100%;
+  background: #fffbe7;
+  z-index: 3;
+  animation: eyelid-blink 1.2s cubic-bezier(0.4,0.2,0.2,1) 1;
+}
+
+@keyframes eyelid-blink {
+  0% { height: 100%; top: 0; }
+  20% { height: 0%; top: 0; }
+  80% { height: 0%; top: 0; }
+  100% { height: 100%; top: 0; }
+}
+
+.eye-lash {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 90px;
+  height: 120px;
+  border-top: 4px solid #222;
+  border-radius: 0 0 30px 30px;
+  transform: translateX(-50%);
+  z-index: 4;
+  background: transparent;
+  pointer-events: none;
+}
+
+.eye-lash::before,
+.eye-lash::after {
+  display: none;
+}
+
+.eye-brow {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  width: 38px;
+  height: 12px;
+  border-top: 3px solid #222;
+  border-radius: 0 0 30px 30px;
+  transform: translateX(-50%) rotate(-8deg);
+  z-index: 5;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.right-eye .eye-brow {
+  transform: translateX(-50%) rotate(8deg);
+} 

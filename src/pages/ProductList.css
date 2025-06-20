@@ -1,0 +1,21 @@
+.pagenav ul .page-item.active .page-link {
+    margin-right: 5px;
+    border-radius: 4px;
+    background: var(--main-color);
+    color: #fff;
+    display: block;
+    border-color: var(--main-color);
+}
+.page-link {
+font-weight: 600;
+    border-radius: 5px;
+    margin-right: 5px;
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #425264;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}

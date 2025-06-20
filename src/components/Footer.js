@@ -119,6 +119,10 @@ function Footer({ setCurrentPage }) {
                 <img src="/images/payment.png"
                   className="lazyload" alt="Phương thức thanh toán" />
               </div>
+              <div className="qr-support" style={{ marginTop: 16, textAlign: 'center' }}>
+                <img src="/logo/ma-qr.jpg" alt="Mã QR hỗ trợ" style={{ maxWidth: 120, width: '100%', borderRadius: 8, boxShadow: '0 2px 8px #eee' }} />
+                <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>Quét mã QR để kết nối</div>
+              </div>
             </div>
           </div>
         </div>

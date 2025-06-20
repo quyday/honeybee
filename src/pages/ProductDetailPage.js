@@ -2,9 +2,18 @@ import React, { useEffect, useState } from 'react';
 import './ProductDetailPage.css';
 import { useCart } from "../context/CartContext";
 
+const THUMB_COUNT = 5;
+
 function ProductDetailPage({ product, onBack, setCurrentPage, setSelectedProduct }) {
     const { addToCart, setIsCartOpen } = useCart();
+    const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+    const [thumbStartIdx, setThumbStartIdx] = useState(0);
     if (!product) return null;
+
+    // Lấy mảng ảnh của sản phẩm, nếu không có thì fallback về 1 ảnh
+    const productImages = product.images && product.images.length > 0
+        ? product.images
+        : [product.image];
 
     // Lấy danh sách sản phẩm từ localStorage hoặc mặc định
     const getAllProducts = () => {
@@ -77,44 +86,49 @@ function ProductDetailPage({ product, onBack, setCurrentPage, setSelectedProduct
                         <div className="product-detail-left product-images col-12 col-md-12 col-lg-6 col-xl-6">
                             <div className="product-image-detail clearfix">
                                 <div className="col_large_default large-image">
-                                    <div className="swiper-container gallery-top margin-bottom-10">
-                                        <div className="swiper-wrapper" id="lightgallery">
-                                            <a className="swiper-slide" data-hash="0"
-                                                href="//bizweb.dktcdn.net/thumb/1024x1024/100/472/304/products/9350631000056.jpg?v=1669707636973"
-                                                title="Bấm vào để xem thư viện ảnh Mật Ong Hoa Sâm Ngọc Linh">
-                                                <img src={product.image} style={{ height: "100%" }}
-                                                    alt={product.name}
-                                                    className="img-responsive mx-auto d-block swiper-lazy lazyload" />
-                                            </a>
-                                        </div>
+                                    {/* Ảnh lớn */}
+                                    <div style={{ width: '100%', height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px #eee' }}>
+                                        <img
+                                            src={productImages[selectedImageIdx]}
+                                            style={{ width: '100%', maxWidth: '100%', maxHeight: 380, objectFit: 'contain' }}
+                                            alt={product.name}
+                                            className="img-responsive mx-auto d-block"
+                                        />
                                     </div>
                                 </div>
-                                <div className="thumb_product_details clearfix" bis_skin_checked="1">
-                                    <div className="swiper-container gallery-thumbs swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-thumbs" bis_skin_checked="1">
-                                        <div className="swiper-wrapper" id="swiper-wrapper-210a5572bb36b7c83" aria-live="polite" bis_skin_checked="1" style={{ transition: "all", transform: "translate3d(0px, 0px, 0px)" }}>
-
-                                            <div className="swiper-slide swiper-slide-active" data-hash="0" role="group" aria-label="1 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-                                                <img src={product.image} alt={product.name} className="swiper-lazy swiper-lazy-loaded" />
-                                            </div>
-                                            <div className="swiper-slide swiper-slide-next swiper-slide-thumb-active" data-hash="1" role="group" aria-label="2 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-                                                <img src="/images/australian-manuka-honey-mgo-30-500g.jpg" className="swiper-lazy swiper-lazy-loaded" />
-                                            </div>
-                                            <div className="swiper-slide" data-hash="2" role="group" aria-label="3 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-                                                <img src="/images/bramwells-mgo100-manuka-honey.jpg" alt={product.name} className="swiper-lazy swiper-lazy-loaded" />
-
-                                            </div>
-
-                                            <div className="swiper-slide" data-hash="3" role="group" aria-label="4 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-                                                <img src="/images/3df-800-10-1f1424d2-97db-4cea-ba6e-d3c585d47bea.jpg" alt={product.name} className="swiper-lazy swiper-lazy-loaded" />
-
-                                            </div>
-                                            <div className="swiper-slide" data-hash="4" role="group" aria-label="5 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-                                                <img src="/images/7-d32481ff-654d-414f-9782-34420d36363b.png" alt={product.name} className="swiper-lazy swiper-lazy-loaded" />
-                                            </div>
-                                        </div>
-                                        <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-
-
+                                {/* Thumbnail slider */}
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+                                    <button
+                                        onClick={() => setThumbStartIdx(idx => Math.max(0, idx - 1))}
+                                        disabled={thumbStartIdx === 0}
+                                        style={{ fontSize: 20, padding: '0 8px', borderRadius: 6, border: '1px solid #eee', background: '#fff', cursor: thumbStartIdx === 0 ? 'not-allowed' : 'pointer' }}
+                                    >{'<'}</button>
+                                    {productImages.slice(thumbStartIdx, thumbStartIdx + THUMB_COUNT).map((img, idx) => {
+                                        const realIdx = thumbStartIdx + idx;
+                                        return (
+                                            <img
+                                                key={img}
+                                                src={img}
+                                                alt={`thumb-${realIdx}`}
+                                                style={{
+                                                    width: 60,
+                                                    height: 60,
+                                                    border: realIdx === selectedImageIdx ? '2px solid orange' : '2px solid #eee',
+                                                    borderRadius: 8,
+                                                    objectFit: 'cover',
+                                                    cursor: 'pointer',
+                                                    background: '#fff',
+                                                    boxShadow: realIdx === selectedImageIdx ? '0 2px 8px #ffe082' : 'none',
+                                                }}
+                                                onClick={() => setSelectedImageIdx(realIdx)}
+                                            />
+                                        );
+                                    })}
+                                    <button
+                                        onClick={() => setThumbStartIdx(idx => Math.min(productImages.length - THUMB_COUNT, idx + 1))}
+                                        disabled={thumbStartIdx + THUMB_COUNT >= productImages.length}
+                                        style={{ fontSize: 20, padding: '0 8px', borderRadius: 6, border: '1px solid #eee', background: '#fff', cursor: thumbStartIdx + THUMB_COUNT >= productImages.length ? 'not-allowed' : 'pointer' }}
+                                    >{'>'}</button>
                                 </div>
                             </div>
                         </div>

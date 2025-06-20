@@ -24,17 +24,17 @@ function Header({ setCurrentPage }) {
 
   const handleMenuClick = (menu) => {
     if (isTransitioning) return;
-    
+
     // Kiểm tra nếu menu là profile và user chưa đăng nhập
     if (menu === 'profile' && !user) {
       handleMenuClick('login');
       return;
     }
-    
+
     setIsTransitioning(true);
     setActiveMenu(menu);
     setCurrentPage(menu);
-    
+
     setTimeout(() => {
       setIsTransitioning(false);
     }, 300);
@@ -53,12 +53,12 @@ function Header({ setCurrentPage }) {
 
   return (
     <header className="header">
-      <div className="tophead lazyload" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg_header.png)`}}>
+      <div className="tophead lazyload" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg_header.png)` }}>
         <div className="container">
           <div className="text_tophead">
             <img className="img-responsive lazyload"
               src="/images/bee_header.png"
-              alt="bee_header"/>Miễn phí vận chuyển trên mọi đơn hàng
+              alt="bee_header" />Miễn phí vận chuyển trên mọi đơn hàng
           </div>
         </div>
       </div>
@@ -67,7 +67,82 @@ function Header({ setCurrentPage }) {
           <div className="row">
             <div className="col-lg-5 col-md-12 col-12">
               <div className="header_menu clearfix">
-                <div className={`navigation-head menu_mobile${isMobileMenuOpen ? ' open' : ''}`}>
+                {isMobileMenuOpen && (
+                  <>
+                    <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+                    <div className="navigation-head menu_mobile open_sidebar_menu">
+                      <button
+                        className="close-mobile-menu"
+                        style={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 32, color: '#fff', zIndex: 1001, cursor: 'pointer' }}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        aria-label="Đóng menu"
+                      >
+                        ×
+                      </button>
+                      <nav className="nav-horizontal">
+                        <div className="account_mb">
+                          <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('login'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path></svg>Đăng nhập</a>
+                          <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('register'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"></path></svg>Đăng ký</a>
+                        </div>
+                        <ul className="item_big">
+                          <li className="nav-item active">
+                            <a className="a-img" onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('home'); }} title="Trang chủ">
+                              <span>Trang chủ</span>
+                            </a>
+                          </li>
+                          <li className="nav-item level0">
+                            <a className="a-img" onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products'); }} title="Sản phẩm">
+                              Sản phẩm <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="svg-inline--fa fa-caret-down fa-w-10"><path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path></svg>
+                            </a>
+                            <i className="icon icon-plus"></i>
+                            <ul className="item_small level0">
+                              <li className="level1">
+                                <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-imported'); }} title="Mật ong nhập khẩu">Mật ong nhập khẩu</a>
+                              </li>
+                              <li className="level1">
+                                <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-wild'); }} title="Mật ong rừng">Mật ong rừng<i className="icon-right"></i></a>
+                                <i className="icon icon-plus"></i>
+                                <ul className="level1">
+                                  <li className="level2">
+                                    <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-tropical'); }} title="Mật ong rừng nhiệt đới" className="a3">Mật ong rừng nhiệt đới</a>
+                                  </li>
+                                  <li className="level2">
+                                    <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-flower-wild'); }} title="Mật ong rừng hoa" className="a3">Mật ong rừng hoa</a>
+                                  </li>
+                                  <li className="level2">
+                                    <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-salty-wild'); }} title="Mật ong rừng nhập mặn" className="a3">Mật ong rừng nhập mặn</a>
+                                  </li>
+                                </ul>
+                              </li>
+                              <li className="level1">
+                                <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-flower'); }} title="Mật ong hoa">Mật ong hoa</a>
+                              </li>
+                              <li className="level1">
+                                <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-natural'); }} title="Mật ong thiên nhiên">Mật ong thiên nhiên</a>
+                              </li>
+                              <li className="level1">
+                                <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('products-pure'); }} title="Mật ong nguyên chất">Mật ong nguyên chất</a>
+                              </li>
+                            </ul>
+                          </li>
+                          
+                          <li className="nav-item">
+                            <a className="a-img" onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('contact'); }} title="Liên hệ">
+                              <span>Liên hệ</span>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a className="a-img" onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('introduct'); }} title="Giới thiệu">
+                              <span>Giới thiệu</span>
+                            </a>
+                          </li>
+                         
+                        </ul>
+                      </nav>
+                    </div>
+                  </>
+                )}
+                <div className={`menu_mobile navigation-head${isMobileMenuOpen ? ' open' : ''}`}>
                   {isMobileMenuOpen && (
                     <>
                       <div className="mobile-menu-overlay" onClick={handleOverlayClick}></div>
@@ -97,7 +172,7 @@ function Header({ setCurrentPage }) {
                       </li>
                       <li className={`nav-item level0 ${activeMenu === 'products' ? 'active' : ''}`}>
                         <a className="a-img" onClick={() => handleMenuClick('products')} title="Sản phẩm">
-                          Sản phẩm 
+                          Sản phẩm
                           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="svg-inline--fa fa-caret-down fa-w-10">
                             <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z" />
                           </svg>
@@ -152,7 +227,7 @@ function Header({ setCurrentPage }) {
               <div className="logo_center">
                 <div className="logo">
                   <a href="/" className="logo-wrapper">
-                    <img src="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/logo.png?1729245409661" alt="logo Template Honey Bee"/>
+                    <img src="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/logo.png?1729245409661" alt="logo Template Honey Bee" />
                   </a>
                 </div>
               </div>
@@ -160,7 +235,7 @@ function Header({ setCurrentPage }) {
             <div className="col-lg-5 col-md-7 col-12">
               <div className="header-right">
                 <div className="hotline_header">
-                  Hotline:<a href="tel:18006750" style={{marginLeft: '10px'}}>0387-231-205</a>
+                  Hotline:<a href="tel:18006750" style={{ marginLeft: '10px' }}>0387-231-205</a>
                 </div>
                 <div className="account_header">
                   <a
@@ -203,12 +278,12 @@ function Header({ setCurrentPage }) {
                     <span className="count_item count_item_pr">{totalQuantity}</span>
                   </a>
                 </div>
-                <div className="menu-bar-mobile menu-bar-h nav-mobile-button" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+<div className="menu-bar-mobile menu-bar-h nav-mobile-button" onClick={() => setIsMobileMenuOpen(true)}>
                   <div className="menu-bar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="none">
-                      <path d="M6.94116 2V0H18.9412V2H6.94116Z" fill="white" />
-                      <path d="M0.941162 7H18.9412V5H0.941162V7Z" fill="white" />
-                      <path d="M6.94116 12H18.9412V10H6.94116V12Z" fill="white" />
+                      <path d="M6.94116 2V0H18.9412V2H6.94116Z" fill="white"></path>
+                      <path d="M0.941162 7H18.9412V5H0.941162V7Z" fill="white"></path>
+                      <path d="M6.94116 12H18.9412V10H6.94116V12Z" fill="white"></path>
                     </svg>
                   </div>
                 </div>

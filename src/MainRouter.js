@@ -20,6 +20,7 @@ import CheckoutPage from './pages/CheckoutPage';
 function MainRouter() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedNews, setSelectedNews] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function MainRouter() {
     console.log('Rendering page:', currentPage); // Debug log
     switch (currentPage) {
       case 'home':
-        return <Home setCurrentPage={setCurrentPage} setSelectedNews={setSelectedNews} onNewsClick={handleNewsClick} />;
+        return <Home setCurrentPage={setCurrentPage} setSelectedNews={setSelectedNews} onNewsClick={handleNewsClick} setSelectedProduct={setSelectedProduct} />;
       case 'login':
         return <Login setCurrentPage={setCurrentPage} />;
       case 'register':
@@ -59,7 +60,7 @@ function MainRouter() {
       case 'products-imported':
         return <ProductList onNavigate={setCurrentPage} filterType="imported" title="Mật ong nhập khẩu" />;
       case 'product-detail':
-        return <ProductDetailPage setCurrentPage={setCurrentPage} />;
+        return <ProductDetailPage setCurrentPage={setCurrentPage} product={selectedProduct} setSelectedProduct={setSelectedProduct} />;
       case 'cart':
         return <Cart setCurrentPage={setCurrentPage} />;
       case 'introduct':

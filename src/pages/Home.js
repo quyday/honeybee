@@ -1,12 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Home.css';
 import './HomeAnimation.css';
+import { useCart } from '../context/CartContext';
 
-function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick }) {
+function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick, setSelectedProduct }) {
 	// Thêm hàm xử lý click xem thêm sản phẩm
 	const handleViewMoreProducts = () => {
 		if (setCurrentPage) setCurrentPage('products');
 		if (onViewMoreProducts) onViewMoreProducts();
+	};
+
+	// Thêm state cho số lượng và size sản phẩm đặc biệt
+	const { addToCart } = useCart();
+	const [qty, setQty] = useState(1);
+	const [size, setSize] = useState('200g');
+
+	// Danh sách ảnh sản phẩm
+	const productImages = [
+		"/images/9350631000056.jpg",
+		"/images/australian-manuka-honey-mgo-30-500g.jpg",
+		"/images/bramwells-mgo100-manuka-honey.jpg",
+		"/images/3df-800-10-1f1424d2-97db-4cea-ba6e-d3c585d47bea.jpg",
+		"/images/7-d32481ff-654d-414f-9782-34420d36363b.png"
+	];
+	const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+	const [thumbStartIdx, setThumbStartIdx] = useState(0);
+	const THUMB_COUNT = 5;
+
+	// Định nghĩa sản phẩm "Mật Ong Hoa Sâm Ngọc Linh"
+	const product = {
+		id: 3,
+		name: "Mật Ong Hoa Sâm Ngọc Linh",
+		price: size === '200g' ? 1000000 : 2500000,
+		image: process.env.PUBLIC_URL + "/images/9350631000056.jpg",
+		variantId: size === '200g' ? '76948955' : '76948956',
+		size,
+	};
+
+	const handleAddToCart = (e) => {
+		e.preventDefault();
+		addToCart(product, qty);
+		// Có thể hiện thông báo nếu muốn
+	};
+
+	const handleBuyNow = (e) => {
+		e.preventDefault();
+		addToCart(product, qty);
+		if (setCurrentPage) setCurrentPage('cart');
+	};
+
+	// Thêm hàm xử lý chuyển sang trang chi tiết sản phẩm
+	const handleProductDetail = (product) => {
+		if (setSelectedProduct) setSelectedProduct(product);
+		if (setCurrentPage) setCurrentPage('product-detail');
 	};
 
 	return (
@@ -57,47 +103,48 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 						<div className="product-detail-left product-images col-12 col-md-12 col-lg-6 col-xl-6">
 							<div className="product-image-detail clearfix">
 								<div className="fullarge_img">
-									<div className="swiper-container gallery-top margin-bottom-10">
-										<div className="swiper-wrapper" id="lightgallery">
-											<a className="swiper-slide" data-hash="0"
-												href="//bizweb.dktcdn.net/thumb/1024x1024/100/472/304/products/9350631000056.jpg?v=1669707636973"
-												title="Bấm vào để xem thư viện ảnh Mật Ong Hoa Sâm Ngọc Linh">
-												<img src="/images/9350631000056.jpg" style={{ width: "100%", height: "100%" }}
-													alt="Mật Ong Hoa Sâm Ngọc Linh"
-													className="img-responsive mx-auto d-block swiper-lazy lazyload" />
-											</a>
-										</div>
+									<div style={{ width: '100%', height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px #eee' }}>
+										<img
+											src={productImages[selectedImageIdx]}
+											style={{ width: '100%', maxWidth: '100%', maxHeight: 380, objectFit: 'contain' }}
+											alt="Mật Ong Hoa Sâm Ngọc Linh"
+											className="img-responsive mx-auto d-block"
+										/>
 									</div>
 								</div>
-								<div className="thumb_product_details clearfix" bis_skin_checked="1">
-									<div className="swiper-container gallery-thumbs swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-thumbs" bis_skin_checked="1">
-										<div className="swiper-wrapper" id="swiper-wrapper-210a5572bb36b7c83" aria-live="polite" bis_skin_checked="1" style={{ transition: "all", transform: "translate3d(0px, 0px, 0px)" }}>
-											<div className="swiper-slide swiper-slide-active" data-hash="0" role="group" aria-label="1 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-												<img src="/images/9350631000056.jpg" alt="Mật Ong Hoa Sâm Ngọc Linh" className="swiper-lazy swiper-lazy-loaded" />
-
-											</div>
-
-											<div className="swiper-slide swiper-slide-next swiper-slide-thumb-active" data-hash="1" role="group" aria-label="2 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-												<img src="/images/australian-manuka-honey-mgo-30-500g.jpg" className="swiper-lazy swiper-lazy-loaded" />
-
-											</div>
-
-											<div className="swiper-slide" data-hash="2" role="group" aria-label="3 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-												<img src="/images/bramwells-mgo100-manuka-honey.jpg" alt="Mật Ong Hoa Sâm Ngọc Linh" className="swiper-lazy swiper-lazy-loaded" />
-
-											</div>
-
-											<div className="swiper-slide" data-hash="3" role="group" aria-label="4 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-												<img src="/images/3df-800-10-1f1424d2-97db-4cea-ba6e-d3c585d47bea.jpg" alt="Mật Ong Hoa Sâm Ngọc Linh" className="swiper-lazy swiper-lazy-loaded" />
-
-											</div>
-											<div className="swiper-slide" data-hash="4" role="group" aria-label="5 / 5" bis_skin_checked="1" style={{ width: "69px", marginRight: "15px" }}>
-												<img src="/images/7-d32481ff-654d-414f-9782-34420d36363b.png" alt="Mật Ong Hoa Sâm Ngọc Linh" className="swiper-lazy swiper-lazy-loaded" />
-											</div>
-										</div>
-										<span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-
-
+								{/* Thumbnail slider */}
+								<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+									<button
+										onClick={() => setThumbStartIdx(idx => Math.max(0, idx - 1))}
+										disabled={thumbStartIdx === 0}
+										style={{ fontSize: 20, padding: '0 8px', borderRadius: 6, border: '1px solid #eee', background: '#fff', cursor: thumbStartIdx === 0 ? 'not-allowed' : 'pointer' }}
+									>{'<'}</button>
+									{productImages.slice(thumbStartIdx, thumbStartIdx + THUMB_COUNT).map((img, idx) => {
+										const realIdx = thumbStartIdx + idx;
+										return (
+											<img
+												key={img}
+												src={img}
+												alt={`thumb-${realIdx}`}
+												style={{
+													width: 60,
+													height: 60,
+													border: realIdx === selectedImageIdx ? '2px solid orange' : '2px solid #eee',
+													borderRadius: 8,
+													objectFit: 'cover',
+													cursor: 'pointer',
+													background: '#fff',
+													boxShadow: realIdx === selectedImageIdx ? '0 2px 8px #ffe082' : 'none',
+												}}
+												onClick={() => setSelectedImageIdx(realIdx)}
+											/>
+										);
+									})}
+									<button
+										onClick={() => setThumbStartIdx(idx => Math.min(productImages.length - THUMB_COUNT, idx + 1))}
+										disabled={thumbStartIdx + THUMB_COUNT >= productImages.length}
+										style={{ fontSize: 20, padding: '0 8px', borderRadius: 6, border: '1px solid #eee', background: '#fff', cursor: thumbStartIdx + THUMB_COUNT >= productImages.length ? 'not-allowed' : 'pointer' }}
+									>{'>'}</button>
 								</div>
 							</div>
 						</div>
@@ -105,101 +152,76 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 							<div className="box_details_product" bis_skin_checked="1">
 								<h2 className="title-product"><a href="mat-ong-hoa-sam-ngoc-linh.html" title="Mật Ong Hoa Sâm Ngọc Linh">Mật Ong Hoa Sâm Ngọc Linh</a></h2>
 								<div className="price-box clearfix" bis_skin_checked="1">
-
 									<span className="old-price">
 										<del className="price product-price-old">1.500.000₫</del>
 									</span>
 									<span className="special-price">
-										<span className="price product-price">1.000.000₫</span>
+										<span className="price product-price">{size === '200g' ? '1.000.000₫' : '2.500.000₫'}</span>
 									</span>
 									<span className="save-price">
-										<span className="price product-price-save">-500.000₫</span>
+										<span className="price product-price-save">{size === '200g' ? '-500.000₫' : '-0₫'}</span>
 									</span>
-
 								</div>
 								<div className="product-summary" bis_skin_checked="1">
-
 									<ul>
 										<li>Uống mật ong vào buổi sáng giúp làm sạch, bổ sung năng lượng cho dạ dày.</li>
 										<li>Uống trước khi đi ngủ giúp an thần, dễ ngủ.</li>
-										<li>Uống mật trước khi ăn 30 phút giúp tốt cho hệ tiêu hó...
-
-										</li></ul></div>
+										<li>Uống mật trước khi ăn 30 phút giúp tốt cho hệ tiêu hóa...</li>
+									</ul>
+								</div>
 								<div className="product-content" bis_skin_checked="1">
-
 									<p><strong>Đặc điểm sản phẩm</strong></p>
-									<p>Ong hút mật của hoa sâm Ngọc Linh và các loại dược liệu quý khác nên mật thơm, mùi vị
-										có chút khác biệt so với các loại mật ong khác.</p>
-									<p><strong>Côn...
-
-									</strong></p></div><strong>
-									<form encType="multipart/form-data" id="add-to-cart-form" data-cart-form="" action="/cart/add" method="post" className="wishItem">
+									<p>Ong hút mật của hoa sâm Ngọc Linh và các loại dược liệu quý khác nên mật thơm, mùi vị có chút khác biệt so với các loại mật ong khác.</p>
+									<p><strong>Côn...</strong></p>
+								</div>
+								<strong>
+									<form encType="multipart/form-data" id="add-to-cart-form" data-cart-form="" action="/cart/add" method="post" className="wishItem" onSubmit={e => e.preventDefault()}>
 										<div className="form-product" bis_skin_checked="1">
 											<div className="select-swatch" bis_skin_checked="1">
 												<div className=" swatch clearfix" data-option-index="0" bis_skin_checked="1">
 													<div className="options-title" bis_skin_checked="1">Kích thước</div>
-													<div data-value="200g" className="swatch-element 200g available" bis_skin_checked="1">
-														<input id="swatch-0-200g" type="radio" name="option-0" value="200g" defaultChecked />
-
-														<label title="200g" htmlFor="swatch-0-200g">
-															200g
-														</label>
+													<div data-value="200g" className={`swatch-element 200g available${size === '200g' ? ' active' : ''}`} bis_skin_checked="1">
+														<input id="swatch-0-200g" type="radio" name="option-0" value="200g" checked={size === '200g'} onChange={() => setSize('200g')} />
+														<label title="200g" htmlFor="swatch-0-200g">200g</label>
 													</div>
-													<div data-value="500g" className="swatch-element 500g available" bis_skin_checked="1">
-														<input id="swatch-0-500g" type="radio" name="option-0" value="500g" />
-														<label title="500g" htmlFor="swatch-0-500g">
-															500g
-														</label>
+													<div data-value="500g" className={`swatch-element 500g available${size === '500g' ? ' active' : ''}`} bis_skin_checked="1">
+														<input id="swatch-0-500g" type="radio" name="option-0" value="500g" checked={size === '500g'} onChange={() => setSize('500g')} />
+														<label title="500g" htmlFor="swatch-0-500g">500g</label>
 													</div>
 												</div>
 											</div>
-											<div className="box-variant clearfix  d-none " bis_skin_checked="1">
-												<div className="selector-wrapper" style={{ textAlign: "left", marginBottom: "15px" }} bis_skin_checked="1"><label>Kích thước</label><select className="single-option-selector" data-option="option1" id="product-selectors-option-0"><option value="200g">200g</option><option value="500g">500g</option></select></div><select id="product-selectors" className="form-control form-control-lg" name="variantId" style={{ display: "none" }} defaultValue="76948955">
-													<option value="76948955">200g - 1.000.000₫</option>
-													<option value="76948956">500g - 2.500.000₫</option>
-												</select>
+											<div className="clearfix custom-btn-number" bis_skin_checked="1">
+												<label>Số lượng:</label>
+												<div className="custom custom-btn-numbers clearfix input_number_product" bis_skin_checked="1">
+													<button type="button" onClick={() => setQty(q => Math.max(1, q - 1))} className="btn-minus btn-cts">–</button>
+													<input aria-label="Số lượng" type="text" className="qty input-text" id="qty" name="quantity" value={qty} onChange={e => setQty(Math.max(1, parseInt(e.target.value) || 1))} maxLength="3" />
+													<button type="button" onClick={() => setQty(q => q + 1)} className="btn-plus btn-cts">+</button>
+												</div>
+												<div className="vd" bis_skin_checked="1">
+													<span className="vend_c">Còn hàng</span>
+												</div>
 											</div>
-											<div className="clearfix from-action-addcart" bis_skin_checked="1">
-												<div className="clearfix custom-btn-number" bis_skin_checked="1">
-													<label>Số lượng:</label>
-													<div className="custom custom-btn-numbers clearfix input_number_product" bis_skin_checked="1">
-														<button onClick={() => {
-															const result = document.getElementById('qty');
-															let qty = parseInt(result.value, 10);
-															if (!isNaN(qty) && qty > 1) result.value = qty - 1;
-														}} className="btn-minus btn-cts" type="button">–</button>
-														<input aria-label="Số lượng" type="text" className="qty input-text" id="qty" name="quantity" size="4" defaultValue="1" maxLength="3" />
-														<button onClick={() => {
-															const result = document.getElementById('qty');
-															let qty = parseInt(result.value, 10);
-															if (!isNaN(qty)) result.value = qty + 1;
-														}} className="btn-plus btn-cts" type="button">+</button>
-													</div>
-													<div className="vd" bis_skin_checked="1">
-														<span className="vend_c">Còn hàng</span>
-													</div>
-												</div>
-												<div className="btn-mua clearfix" bis_skin_checked="1">
-													<button type="submit" data-role="addtocart" className="btn btn-lg btn-gray btn-cart btn_buy add_to_cart"><span className="text_1">Thêm giỏ hàng</span></button>
-													<button type="button" className="btn_buynow btn_base btn-buy-now">
-														<span className="text_1">Mua ngay</span>
-													</button>
-
-												</div>
+											<div className="btn-mua clearfix" bis_skin_checked="1">
+												<button type="button" className="btn btn-lg btn-gray btn-cart btn_buy add_to_cart" onClick={handleAddToCart}>
+													<span className="text_1">Thêm giỏ hàng</span>
+												</button>
+												<button type="button" className="btn_buynow btn_base btn-buy-now" onClick={handleBuyNow}>
+													<span className="text_1">Mua ngay</span>
+												</button>
 											</div>
 										</div>
 									</form>
-								</strong></div>
+								</strong>
+							</div>
 						</div>
 					</div>
 				</div>
-
 			</section>
 			<section className="section_bestsale lazyload" data-src="/images/bg_bestsale.png" data-was-processed="true" style={{ backgroundImage: "url(/images/bg_bestsale.png)" }}>
 				<div className="container" bis_skin_checked="1">
 					<div className="title_module_main" bis_skin_checked="1">
 						<h2>
-							<a href="collections/all.html" title="Mật ong bán chạy nhất">Mật ong bán chạy nhất</a>
+							<p title="Mật ong bán chạy nhất">Mật ong bán chạy nhất</p>
 						</h2>
 					</div>
 					<div className="swiper_bestsale swiper-container swiper-container-initialized swiper-container-horizontal" bis_skin_checked="1">
@@ -228,7 +250,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 									</form>
 								</div>
 							</div>
-
 							<div className="item swiper-slide swiper-slide-next" role="group" aria-label="2 / 6" bis_skin_checked="1" style={{ width: "270px", marginRight: "20px" }}>
 								<div className="item_product_main" bis_skin_checked="1">
 									<form action="/cart/add" method="post" className="variants product-action wishItem" data-cart-form="" data-id="product-actions-28668464" encType="multipart/form-data">
@@ -252,7 +273,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 												</span>
 												<span className="price">300.000₫</span>
 												<span className="compare-price">500.000₫</span>
-
 											</div>
 										</div>
 									</form>
@@ -265,7 +285,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<a className="image_thumb" href="mat-ong-rung-hoa-cao-nguyen.html" title="Mật ong rừng Hoa Cao Nguyên" style={{ height: "270px" }}>
 												<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/16.png?v=1669708547967" data-src="https://bizweb.dktcdn.net/100/472/304/products/16.png?v=1669708547967" alt="Mật ong rừng Hoa Cao Nguyên" className="lazyload img-responsive center-block loaded" data-was-processed="true" />
 											</a>
-
 											<div className="action-cart" bis_skin_checked="1">
 												<input className="hidden" type="hidden" name="variantId" value="76947736" />
 												<button className="btn btn-cart btn-left  btn btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='mat-ong-rung-hoa-cao-nguyen.html'}>
@@ -281,13 +300,11 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 												</span>
 												<span className="price">230.000₫</span>
 												<span className="compare-price">300.000₫</span>
-
 											</div>
 										</div>
 									</form>
 								</div>
 							</div>
-
 							<div className="item swiper-slide" role="group" aria-label="4 / 6" bis_skin_checked="1" style={{ width: "270px", marginRight: "20px" }}>
 								<div className="item_product_main" bis_skin_checked="1">
 									<form action="/cart/add" method="post" className="variants product-action wishItem" data-cart-form="" data-id="product-actions-28669317" encType="multipart/form-data">
@@ -295,7 +312,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<a className="image_thumb" href="mat-ong-rung.html-hoa-rung-phuong-nam.html" title="Mật ong rừng Hoa Rừng Phương Nam" style={{ height: "270px" }}>
 												<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/17.png?v=1669708779423" data-src="https://bizweb.dktcdn.net/100/472/304/products/17.png?v=1669708779423" alt="Mật ong rừng Hoa Rừng Phương Nam" className="lazyload img-responsive center-block loaded" data-was-processed="true" />
 											</a>
-
 											<div className="action-cart" bis_skin_checked="1">
 												<input type="hidden" name="variantId" value="76947769" />
 												<button className="btn-buy btn-left btn-views add_to_cart " title="Mua ngay">
@@ -312,13 +328,11 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 												</span>
 												<span className="price">200.000₫</span>
 												<span className="compare-price">400.000₫</span>
-
 											</div>
 										</div>
 									</form>
 								</div>
 							</div>
-
 							<div className="item swiper-slide" role="group" aria-label="5 / 6" bis_skin_checked="1" style={{ width: "270px", marginRight: "20px" }}>
 								<div className="item_product_main" bis_skin_checked="1">
 									<form action="/cart/add" method="post" className="variants product-action wishItem" data-cart-form="" data-id="product-actions-28669438" encType="multipart/form-data">
@@ -326,7 +340,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<a className="image_thumb" href="mat-ong-chin-hoa-xuyen-chi.html" title="Mật ong chín Hoa Xuyến Chi" style={{ height: "270px" }}>
 												<img width="199" height="199" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" data-src="https://bizweb.dktcdn.net/100/472/304/products/4.png?v=1669705551557" alt="Mật ong chín Hoa Xuyến Chi" className="lazyload img-responsive center-block" />
 											</a>
-
 											<div className="action-cart" bis_skin_checked="1">
 												<input className="hidden" type="hidden" name="variantId" value="76948080" />
 												<button className="btn btn-cart btn-left  btn btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='mat-ong-chin-hoa-xuyen-chi.html'}>
@@ -342,13 +355,11 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 												</span>
 												<span className="price">300.000₫</span>
 												<span className="compare-price">600.000₫</span>
-
 											</div>
 										</div>
 									</form>
 								</div>
 							</div>
-
 							<div className="item swiper-slide" role="group" aria-label="6 / 6" bis_skin_checked="1" style={{ width: "270px", marginRight: "20px" }}>
 								<div className="item_product_main" bis_skin_checked="1">
 									<form action="/cart/add" method="post" className="variants product-action wishItem" data-cart-form="" data-id="product-actions-28669863" encType="multipart/form-data">
@@ -356,7 +367,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<a className="image_thumb" href="mat-ong-hoa-sam-ngoc-linh.html" title="Mật Ong Hoa Sâm Ngọc Linh" style={{ height: "270px" }}>
 												<img width="199" height="199" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" data-src="https://bizweb.dktcdn.net/100/472/304/products/9350631000056.jpg?v=1669707636973" alt="Mật Ong Hoa Sâm Ngọc Linh" className="lazyload img-responsive center-block" />
 											</a>
-
 											<div className="action-cart" bis_skin_checked="1">
 												<input className="hidden" type="hidden" name="variantId" value="76948955" />
 												<button className="btn btn-cart btn-left  btn btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='mat-ong-hoa-sam-ngoc-linh.html'}>
@@ -377,12 +387,11 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 									</form>
 								</div>
 							</div>
-
 						</div>
-						<span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+						<span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+					</div>
 					<div className="button_readmore" bis_skin_checked="1">
-
-						<a title="Xem thêm sản phẩm" onClick={e => { e.preventDefault(); if (setCurrentPage) setCurrentPage('products'); if (onViewMoreProducts) onViewMoreProducts(); }} style={{ fontWeight: 600, fontSize: 18, padding: '8px 24px', borderRadius: 8,textDecoration: 'underline',  }}>
+						<a title="Xem thêm sản phẩm" onClick={e => { e.preventDefault(); if (setCurrentPage) setCurrentPage('products'); if (onViewMoreProducts) onViewMoreProducts(); }} style={{ fontWeight: 600, fontSize: 18, padding: '8px 24px', borderRadius: 8, textDecoration: 'underline', }}>
 							Xem thêm sản phẩm
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
 								<path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.24-22.24c-9.357-9.357-24.522-9.375-33.901-.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"></path>
@@ -453,21 +462,16 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 									<div className="blogwp" bis_skin_checked="1">
 										<div className="blog-thumbnail" bis_skin_checked="1">
 											<a className="thumb" href="mat-ong-rung-va-mat-ong-nuoi-loai-nao-tot-hon.html" title="Mật ong rừng và mật ong nuôi loại nào tốt hơn?">
-
 												<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-7.jpg?v=1669711748507" data-src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-7.jpg?v=1669711748507" alt="Mật ong rừng và mật ong nuôi loại nào tốt hơn?" className="lazyload img-responsive loaded" data-was-processed="true" />
-
 											</a>
 										</div>
 										<div className="content_blog clearfix" bis_skin_checked="1">
 											<span className="post-time">
-
-
 												Thứ Ba,
 												29/11/2022
 											</span>
 											<h3><a onClick={() => onNewsClick('honey-comparison')} title="Mật ong rừng và mật ong nuôi loại nào tốt hơn?" className="a-title">Mật ong rừng và mật ong nuôi loại nào tốt
 												hơn?</a></h3>
-
 											<div className="summary_blog" bis_skin_checked="1">
 												<p>
 													Mật ong rừng được lấy từ những tổ ong sống dã sinh trong rừng. Khi lấy
@@ -524,8 +528,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													cách lấy mật mà không phá tổ ong.
 													So sánh mật ong nuôi và mật ong rừng&nbsp;
 													&nbsp;
-
-													&nbsp;
 													Dù là mật ong rừng hay mật ong nuôi, giá trị dinh dưỡng và hương vị hoàn
 													toàn giống nhau nếu như có cùng một nguồn mật hoa. Ong là một loài động
 													vật không thể thuần hóa. Khi sống hoang dã trong rừng hay khi được nuôi,
@@ -548,12 +550,10 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													trường và sinh thái. Bạn có ủng hộ việc lấy mật và phá luôn tổ ong?
 												</p>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
-
 							<div className="swiper-slide swiper-slide-next" role="group" aria-label="2 / 4" bis_skin_checked="1" style={{ width: '270px', marginRight: '20px' }}>
 								<div className="blog_item clearfix" bis_skin_checked="1">
 									<div className="blogwp" bis_skin_checked="1">
@@ -569,7 +569,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											</span>
 											<h3><a onClick={() => onNewsClick('honey-benefit')} title="Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe" className="a-title">Tác dụng đến ko ngờ của mật ong chín đối với
 												sức khỏe</a></h3>
-
 											<div className="summary_blog" bis_skin_checked="1">
 												<p>
 													Giàu vi chất dinh dưỡng
@@ -640,39 +639,29 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													bao giờ được cho trẻ em dưới một tuổi uống mật ong vì nguy cơ ngộ độc.
 													Mật ong chín&nbsp;rất ngon, nhưng vẫn chứa nhiều calo và đường
 													&nbsp;
-
-													&nbsp;
 													Mật ong chín là một sự thay thế ngon hơn và tốt cho sức khỏe hơn đường.
 													Nhưng bạn cần đảm bảo chọn thương hiệu uy tín, vì một số loại mật ong có
 													thể bị làm giả, trộn đường hoặc xi rô.
 												</p>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
-
 							<div className="swiper-slide" role="group" aria-label="3 / 4" bis_skin_checked="1" style={{ width: '270px', marginRight: '20px' }}>
 								<div className="blog_item clearfix" bis_skin_checked="1">
 									<div className="blogwp" bis_skin_checked="1">
 										<div className="blog-thumbnail" bis_skin_checked="1">
 											<a className="thumb" href="cong-dung-va-huong-dan-dung-mat-ong-dung-cach.html" title="Công dụng và hướng dẫn dùng mật ong đúng cách">
-
 												<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper.jpg?v=1669709493977" data-src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper.jpg?v=1669709493977" alt="Công dụng và hướng dẫn dùng mật ong đúng cách" className="lazyload img-responsive loaded" data-was-processed="true" />
-
 											</a>
 										</div>
 										<div className="content_blog clearfix" bis_skin_checked="1">
 											<span className="post-time">
-
-
-												Thứ Ba,
 												29/11/2022
 											</span>
 											<h3><a onClick={() => onNewsClick('honey-guide')} title="Công dụng và hướng dẫn dùng mật ong đúng cách" className="a-title">Công dụng và hướng dẫn dùng mật ong
 												đúng cách</a></h3>
-
 											<div className="summary_blog" bis_skin_checked="1">
 												<p>
 													1. Những điều cần biết về mật ong&nbsp;
@@ -690,7 +679,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													Tuy nhiên, một số vi khuẩn sinh sản bằng bào tử, chẳng hạn như loại gây
 													ngộ độc, có thể vẫn sinh sôi và phát triển. Điều này giải thích tại
 													sao&nbsp;mật ong có thể gây ngộ độc ở trẻ sơ sinh.
-
 													Mậtt ong được sử dụng để trị ho, tiểu đường, hen, suyễn&nbsp;và sốt. Nó
 													cũng được sử dụng để chữa tiêu chảy, loét miệng trong quá trình điều trị
 													ung thư và loét dạ dày do nhiễm vi khuẩn Helicobacter pylori (H.
@@ -736,7 +724,6 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													Cải thiện tình trạng các bệnh thần kinh:&nbsp;Các nghiên cứu cho thấy
 													mật ong có thể mang lại lợi ích chống trầm cảm, chống co giật và chống
 													lo âu. Đồng thời, mật ong còn giúp ngăn ngừa rối loạn trí nhớ.
-
 													Mật ong có tác dụng kháng khuẩn:&nbsp;Trong phòng thí nghiệm, mật ong đã
 													được chứng minh là cản trở sự phát triển của các mầm bệnh truyền qua
 													thực phẩm như E. coli và salmonella, và để chống lại một số vi khuẩn,
@@ -767,30 +754,24 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													&nbsp;
 												</p>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
-
 							<div className="swiper-slide" role="group" aria-label="4 / 4" bis_skin_checked="1" style={{ width: '270px', marginRight: '20px' }}>
 								<div className="blog_item clearfix" bis_skin_checked="1">
 									<div className="blogwp" bis_skin_checked="1">
 										<div className="blog-thumbnail" bis_skin_checked="1">
 											<a className="thumb" href="nhung-ai-nen-dung-mat-ong-thuong-xuyen.html" title="Những ai thì nên dùng mật ong thường xuyên?">
-
 												<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-13.jpg?v=1669712533677" data-src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-13.jpg?v=1669712533677" alt="Những ai thì nên dùng mật ong thường xuyên?" className="lazyload img-responsive loaded" data-was-processed="true" />
-
 											</a>
 										</div>
 										<div className="content_blog clearfix" bis_skin_checked="1">
 											<span className="post-time">
-												Thứ Ba,
 												29/11/2022
 											</span>
 											<h3><a onClick={() => onNewsClick('honey-who')} title="Những ai thì nên dùng mật ong thường xuyên?" className="a-title">Những ai thì nên dùng mật ong thường
 												xuyên?</a></h3>
-
 											<div className="summary_blog" bis_skin_checked="1">
 												<p>
 													Những ai nên dùng mật ong? Mật ong là thực phẩm chứa nhiều công dụng tốt
@@ -826,14 +807,13 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 													nóng bừng mặt… được cải thiện rõ rệt.
 												</p>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
-
 						</div>
-						<span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+						<span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+					</div>
 				</div>
 			</section>
 		</main>

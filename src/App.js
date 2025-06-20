@@ -8,6 +8,7 @@ import CartHeader from './components/CartHeader';
 import MainRouter from './MainRouter';
 import BeeCursor from './components/BeeCursor';
 import EyeSplash from './components/EyeSplash';
+import MusicPlayer from './components/MusicPlayer';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           </div>
         </CartProvider>
       </AuthProvider>
+      <MusicPlayer />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './EyeSplash.css';
 
-export default function EyeSplash({ duration = 1800 }) {
+export default function EyeSplash({ duration = 3000 }) {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {

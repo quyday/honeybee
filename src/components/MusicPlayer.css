@@ -1,0 +1,130 @@
+.music-toggle-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #f5af1a;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.music-toggle-button:hover {
+  background-color: #e09d0a;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  transform: scale(1.05);
+}
+
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  width: 300px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid #eee;
+  animation: slideInPlayer 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes slideInPlayer {
+  from {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.music-player .music-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #aaa;
+}
+.music-player .music-close-button:hover {
+    color: #333;
+}
+
+.music-player .song-info {
+  display: flex;
+  align-items: center;
+}
+
+.music-player .song-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.music-player .song-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+.music-player .song-artist {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.music-player .controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.music-player .controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #333;
+}
+
+.music-player .controls button:hover {
+    color: #f5af1a;
+}
+
+.music-player .controls button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.music-player .controls .autoplay-button {
+  color: #aaa;
+}
+
+.music-player .controls .autoplay-button.active {
+  color: #f5af1a;
+}
+
+.autoplay-button svg {
+  width: 20px !important;
+  height: 20px !important;
+} 

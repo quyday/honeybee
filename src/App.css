@@ -29,7 +29,7 @@
 }
 
 /* --- MENU MOBILE RESPONSIVE --- */
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
   .menu_mobile .nav-horizontal {
     display: none;
     position: fixed;
@@ -78,5 +78,5 @@
   .menu-bar-mobile {
     display: none !important;
   }
-}
+} */
 

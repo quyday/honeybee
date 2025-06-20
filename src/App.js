@@ -9,10 +9,12 @@ import MainRouter from './MainRouter';
 import BeeCursor from './components/BeeCursor';
 import EyeSplash from './components/EyeSplash';
 import MusicPlayer from './components/MusicPlayer';
+import FlowerEffect from './components/FlowerEffect';
 
 function App() {
   return (
     <>
+      <FlowerEffect />
       <EyeSplash duration={3000} />
       <BeeCursor />
       <AuthProvider>

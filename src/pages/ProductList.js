@@ -194,7 +194,8 @@ function ProductList({ onNavigate, filterType, title }) {
       image: process.env.PUBLIC_URL + "/images/15.png",
       style: { width: "70%", height: "100%" },
       variantId: "76949308",
-      hasOptions: false
+      hasOptions: false,
+      type: "flower"
     },
     {
       id: 2,
@@ -202,7 +203,8 @@ function ProductList({ onNavigate, filterType, title }) {
       price: "500.000",
       image: process.env.PUBLIC_URL + "/images/14.png",
       variantId: "76949082",
-      hasOptions: false
+      hasOptions: false,
+      type: "wild"
     },
     {
       id: 3,
@@ -212,7 +214,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "33",
       image: process.env.PUBLIC_URL + "/images/9350631000056.jpg",
       variantId: "76948955",
-      hasOptions: true
+      hasOptions: true,
+      type: "flower"
     },
     {
       id: 4,
@@ -222,7 +225,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "50",
       image: process.env.PUBLIC_URL + "/images/13.png",
       variantId: "76948807",
-      hasOptions: false
+      hasOptions: false,
+      type: "natural"
     },
     {
       id: 5,
@@ -232,7 +236,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "25",
       image: process.env.PUBLIC_URL + "/images/3df-800-10-1f1424d2-97db-4cea-ba6e-d3c585d47bea.jpg",
       variantId: "76948513",
-      hasOptions: false
+      hasOptions: false,
+      type: "flower"
     },
     {
       id: 6,
@@ -242,7 +247,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "50",
       image: process.env.PUBLIC_URL + "/images/11.png",
       variantId: "76948333",
-      hasOptions: true
+      hasOptions: true,
+      type: "flower"
     },
     {
       id: 7,
@@ -252,7 +258,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "30",
       image: process.env.PUBLIC_URL + "/images/8.png",
       variantId: "10000007",
-      hasOptions: false
+      hasOptions: false,
+      type: "natural"
     },
     {
       id: 8,
@@ -262,7 +269,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "50",
       image: process.env.PUBLIC_URL + "/images/4.png",
       variantId: "10000008",
-      hasOptions: false
+      hasOptions: false,
+      type: "flower"
     },
     {
       id: 9,
@@ -272,7 +280,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "50",
       image: process.env.PUBLIC_URL + "/images/17.png",
       variantId: "10000009",
-      hasOptions: false
+      hasOptions: false,
+      type: "wild"
     },
     {
       id: 10,
@@ -282,7 +291,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "23",
       image: process.env.PUBLIC_URL + "/images/16.png",
       variantId: "10000010",
-      hasOptions: false
+      hasOptions: false,
+      type: "wild"
     },
     {
       id: 11,
@@ -292,7 +302,8 @@ function ProductList({ onNavigate, filterType, title }) {
       discount: "40",
       image: process.env.PUBLIC_URL + "/images/frame-8.png",
       variantId: "10000011",
-      hasOptions: false
+      hasOptions: false,
+      type: "wild"
     },
     {
       id: 12,
@@ -300,7 +311,80 @@ function ProductList({ onNavigate, filterType, title }) {
       price: "500.000",
       image: process.env.PUBLIC_URL + "/images/frame-7-1.png",
       variantId: "10000012",
-      hasOptions: false
+      hasOptions: false,
+      type: "wild"
+    },
+    {
+      id: 13,
+      name: "Mật ong rừng nhiệt đới A",
+      price: "450.000",
+      image: process.env.PUBLIC_URL + "/images/honey1.jpg",
+      variantId: "10000013",
+      hasOptions: false,
+      type: "wild-tropical"
+    },
+    {
+      id: 14,
+      name: "Mật ong rừng nhiệt đới B",
+      price: "480.000",
+      image: process.env.PUBLIC_URL + "/images/7-d32481ff-654d-414f-9782-34420d36363b.png",
+      variantId: "10000014",
+      hasOptions: false,
+      type: "wild-tropical"
+    },
+    {
+      id: 15,
+      name: "Mật ong rừng hoa Xuyến Chi",
+      price: "320.000",
+      image: process.env.PUBLIC_URL + "/images/4.png",
+      variantId: "10000015",
+      hasOptions: false,
+      type: "wild-flower"
+    },
+    {
+      id: 16,
+      name: "Mật ong rừng ngập mặn Trà Vinh",
+      price: "550.000",
+      image: process.env.PUBLIC_URL + "/images/honey1.jpg",
+      variantId: "10000016",
+      hasOptions: false,
+      type: "wild-saltwater"
+    },
+    {
+      id: 17,
+      name: "Mật ong Manuka Úc",
+      price: "1.200.000",
+      image: process.env.PUBLIC_URL + "/images/australian-manuka-honey-mgo-30-500g.jpg",
+      variantId: "10000017",
+      hasOptions: false,
+      type: "imported"
+    },
+    {
+      id: 18,
+      name: "Mật ong Bramwells Anh Quốc",
+      price: "950.000",
+      image: process.env.PUBLIC_URL + "/images/bramwells-mgo100-manuka-honey.jpg",
+      variantId: "10000018",
+      hasOptions: false,
+      type: "imported"
+    },
+    {
+      id: 19,
+      name: "Mật ong nguyên chất Squeezy",
+      price: "180.000",
+      image: process.env.PUBLIC_URL + "/images/honey1.jpg",
+      variantId: "10000019",
+      hasOptions: false,
+      type: "pure"
+    },
+    {
+      id: 20,
+      name: "Mật ong nguyên chất Organic",
+      price: "220.000",
+      image: process.env.PUBLIC_URL + "/images/13.png",
+      variantId: "10000020",
+      hasOptions: false,
+      type: "pure"
     }
   ];
   });
@@ -345,21 +429,26 @@ function ProductList({ onNavigate, filterType, title }) {
     marginRight: 4,
   };
 
-  // Hàm sắp xếp sản phẩm
+  // Lọc sản phẩm dựa trên filterType
+  const filteredProducts = filterType
+    ? products.filter(p => {
+        if (filterType === 'wild') {
+          // Nếu danh mục là 'wild', hiển thị tất cả các loại con (wild, wild-tropical, v.v.)
+          return p.type && p.type.startsWith('wild');
+        }
+        // Ngược lại, khớp chính xác loại
+        return p.type === filterType;
+      })
+    : products;
+
   const getSortedProducts = () => {
-    let sorted = [...products];
+    let sorted = [...filteredProducts]; // Sử dụng danh sách đã lọc
     switch (sortBy) {
-      case 'alpha-asc':
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'alpha-desc':
-        sorted.sort((a, b) => b.name.localeCompare(a.name));
-        break;
       case 'price-asc':
-        sorted.sort((a, b) => parseInt(a.price.replace(/\D/g, '')) - parseInt(b.price.replace(/\D/g, '')));
+        sorted.sort((a, b) => parseFloat(a.price.replace(/\\./g, '')) - parseFloat(b.price.replace(/\\./g, '')));
         break;
       case 'price-desc':
-        sorted.sort((a, b) => parseInt(b.price.replace(/\D/g, '')) - parseInt(a.price.replace(/\D/g, '')));
+        sorted.sort((a, b) => parseFloat(b.price.replace(/\\./g, '')) - parseFloat(a.price.replace(/\\./g, '')));
         break;
       case 'created-desc':
         sorted.sort((a, b) => b.id - a.id);
@@ -378,11 +467,6 @@ function ProductList({ onNavigate, filterType, title }) {
   // Phân trang
   const totalPages = Math.ceil(sortedProducts.length / pageSize);
   const paginatedProducts = sortedProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-
-  // LỌC SẢN PHẨM THEO filterType (nếu có)
-  const filteredProducts = filterType
-    ? products.filter(p => p.type === filterType)
-    : products;
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
@@ -428,15 +512,16 @@ function ProductList({ onNavigate, filterType, title }) {
 
   return (
     <main className="wrapperMain_content">
-      <h1 style={{ fontWeight: 700, fontSize: 32, margin: '24px 0' }}>{title || 'Tất cả sản phẩm'}</h1>
       <nav className="bread-crumb clearfix">
         <div className="container">
           <ul className="breadcrumb">
             <li className="home">
-              <a href="/"><span>Trang chủ</span></a>
+              <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>
+                <span>Trang chủ</span>
+              </a>
               <span className="mr_lr">&nbsp;/&nbsp;</span>
             </li>
-            <li><strong><span>Tất cả sản phẩm</span></strong></li>
+            <li><strong><span>{title || 'Tất cả sản phẩm'}</span></strong></li>
           </ul>
         </div>
       </nav>
@@ -472,7 +557,7 @@ function ProductList({ onNavigate, filterType, title }) {
                 <div className="sortPagiBar">
                   <div className="row">
                     <div className="col-xl-8 col-md-6 col-12">
-                      <h1 className="collectiontitle">Tất cả sản phẩm</h1>
+                      <h1 className="collectiontitle">{title || 'Tất cả sản phẩm'}</h1>
                     </div>
                     <div className="col-xl-4 col-md-6 col-12">
                       <div className="sort-cate clearfix">
@@ -480,8 +565,6 @@ function ProductList({ onNavigate, filterType, title }) {
                           <label className="left">Sắp xếp: </label>
                           <select name="sortBy" id="sortBy" className="selectBox" value={sortBy} onChange={handleSortChange}>
                             <option value="default">Mặc định</option>
-                            <option value="alpha-asc">A → Z</option>
-                            <option value="alpha-desc">Z → A</option>
                             <option value="price-asc">Giá tăng dần</option>
                             <option value="price-desc">Giá giảm dần</option>
                             <option value="created-desc">Hàng mới nhất</option>

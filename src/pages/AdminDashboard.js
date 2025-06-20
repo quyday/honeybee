@@ -23,6 +23,8 @@ function AdminDashboard({ setCurrentPage }) {
     const { user, logout } = useAuth();
     const [activeView, setActiveView] = useState('dashboard');
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [orders, setOrders] = useState([]);
     const [users, setUsers] = useState([]);
     const [summary, setSummary] = useState({
@@ -56,13 +58,26 @@ function AdminDashboard({ setCurrentPage }) {
         setChartData(formattedChartData);
     }, []);
 
+    useEffect(() => {
+        document.body.classList.add('admin-view-active');
+        if (isSidebarCollapsed) {
+            document.body.classList.add('admin-sidebar-collapsed');
+        } else {
+            document.body.classList.remove('admin-sidebar-collapsed');
+        }
+        return () => {
+            document.body.classList.remove('admin-view-active', 'admin-sidebar-collapsed');
+        };
+    }, [isSidebarCollapsed]);
+
     const menuItems = [
         { key: 'dashboard', label: 'Dashboard', icon: '📊' },
         { key: 'products', label: 'Quản lý sản phẩm', icon: '🛒' },
         { key: 'orders', label: 'Quản lý đơn hàng', icon: '📦' },
         { key: 'users', label: 'Quản lý người dùng', icon: '👥' },
         { key: 'profile', label: 'Thông tin cá nhân', icon: '👤' },
-        { key: 'changepass', label: 'Đổi mật khẩu', icon: '⚙️' },
+        { key: 'changepass', label: 'Đổi mật khẩu', icon: '🔑' },
+        { key: 'settings', label: 'Cài đặt chung', icon: '⚙️' },
         { key: 'admin-intro', label: 'Giới thiệu quyền Admin', icon: '🛡️' },
     ];
 
@@ -104,6 +119,8 @@ function AdminDashboard({ setCurrentPage }) {
                         <BeeDecorations />
                     </div>
                 );
+            case 'settings':
+                return <SettingsTab />;
             case 'admin-intro':
                  setCurrentPage('admin');
                  return null;
@@ -118,7 +135,7 @@ function AdminDashboard({ setCurrentPage }) {
     }
 
     return (
-        <div className="admin-dashboard">
+        <div className={`admin-dashboard ${isSidebarOpen ? 'sidebar-open' : ''} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
             <Sidebar 
                 user={user}
                 menuItems={menuItems} 
@@ -126,10 +143,15 @@ function AdminDashboard({ setCurrentPage }) {
                 setActiveView={setActiveView} 
                 setShowLogoutConfirm={setShowLogoutConfirm}
                 setCurrentPage={setCurrentPage}
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
+                isSidebarCollapsed={isSidebarCollapsed}
+                setIsSidebarCollapsed={setIsSidebarCollapsed}
             />
-            <MainContent user={user} activeView={activeView} menuItems={menuItems}>
+            <MainContent user={user} activeView={activeView} menuItems={menuItems} setIsSidebarOpen={setIsSidebarOpen}>
                 {renderContent()}
             </MainContent>
+            {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
             {showLogoutConfirm && (
                 <div className="logout-modal-overlay">
                     <div className="logout-modal-box">
@@ -147,9 +169,10 @@ function AdminDashboard({ setCurrentPage }) {
 }
 
 // Sidebar Component
-const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConfirm, setCurrentPage }) => {
+const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConfirm, setCurrentPage, isSidebarOpen, setIsSidebarOpen, isSidebarCollapsed, setIsSidebarCollapsed }) => {
     return (
-        <aside className="dashboard-sidebar">
+        <aside className={`dashboard-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
+            <button className="sidebar-close-btn" onClick={() => setIsSidebarOpen(false)}>×</button>
             <div className="sidebar-header">
                 <img src={user?.avatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + user?.name} alt="avatar" className="sidebar-avatar" /> 
                 <div className='sidebar-user-info'>
@@ -169,16 +192,21 @@ const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConf
                                 setActiveView(item.key);
                             }
                         }}
+                        title={item.label}
                     >
                         <span className="icon">{item.icon}</span>
-                        {item.label}
+                        <span className="sidebar-label">{item.label}</span>
                     </li>
                 ))}
             </ul>
-             <ul className="sidebar-nav">
+             <ul className="sidebar-nav sidebar-bottom-nav">
                 <li className='sidebar-nav-item' onClick={() => setShowLogoutConfirm(true)}>
                     <span className="icon">↩️</span>
-                    Đăng xuất
+                    <span className="sidebar-label">Đăng xuất</span>
+                </li>
+                <li className='sidebar-nav-item sidebar-toggle-desktop' onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
+                    <span className="icon">{isSidebarCollapsed ? '→' : '←'}</span>
+                    <span className="sidebar-label">Thu gọn</span>
                 </li>
             </ul>
         </aside>
@@ -186,13 +214,16 @@ const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConf
 };
 
 // Main Content Area Component
-const MainContent = ({ user, activeView, children, menuItems }) => {
+const MainContent = ({ user, activeView, children, menuItems, setIsSidebarOpen }) => {
     const activeItem = menuItems.find(item => item.key === activeView);
     const pageTitle = activeItem ? activeItem.label : 'Dashboard';
     
     return (
         <main className="dashboard-main">
             <header className="dashboard-header">
+                <button className="sidebar-open-btn" onClick={() => setIsSidebarOpen(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
                 <h1>{pageTitle}</h1>
                 <div className="header-actions">
                     <div className="header-search">
@@ -522,5 +553,151 @@ const DashboardView = ({ summary, orders, users, chartData }) => {
     </>
     )
 };
+
+// SettingsTab component
+function SettingsTab() {
+    // Music CRUD
+    const [musicList, setMusicList] = useState(() => {
+        const stored = localStorage.getItem('musicList');
+        return stored ? JSON.parse(stored) : [];
+    });
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [form, setForm] = useState({ title: '', artist: '', src: '', cover: '' });
+    // Flower effect
+    const [flowerEffect, setFlowerEffect] = useState(() => {
+        const stored = localStorage.getItem('flowerEffect');
+        return stored === 'true';
+    });
+
+    useEffect(() => {
+        localStorage.setItem('musicList', JSON.stringify(musicList));
+    }, [musicList]);
+    useEffect(() => {
+        localStorage.setItem('flowerEffect', flowerEffect);
+        window.dispatchEvent(new Event('flower-effect-toggle'));
+    }, [flowerEffect]);
+
+    const handleInputChange = e => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+    const handleAddOrUpdate = e => {
+        e.preventDefault();
+        if (!form.title || !form.artist || !form.src) return;
+        if (editingIndex !== null) {
+            const updated = [...musicList];
+            updated[editingIndex] = { ...form };
+            setMusicList(updated);
+            setEditingIndex(null);
+        } else {
+            setMusicList([...musicList, { ...form }]);
+        }
+        setForm({ title: '', artist: '', src: '', cover: '' });
+    };
+    const handleEdit = idx => {
+        setEditingIndex(idx);
+        setForm(musicList[idx]);
+    };
+    const handleDelete = idx => {
+        if (window.confirm('Bạn có chắc muốn xóa bài này?')) {
+            setMusicList(musicList.filter((_, i) => i !== idx));
+        }
+    };
+    const handleCancelEdit = () => {
+        setEditingIndex(null);
+        setForm({ title: '', artist: '', src: '', cover: '' });
+    };
+    return (
+        <div className="settings-tab">
+            <h2>Cài đặt chung</h2>
+            <section style={{marginBottom: 32}}>
+                <h3>Quản lý nhạc cho MusicPlayer</h3>
+                <form onSubmit={handleAddOrUpdate} className="music-form" style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+                    <input name="title" value={form.title} onChange={handleInputChange} placeholder="Tên bài hát" required />
+                    <input name="artist" value={form.artist} onChange={handleInputChange} placeholder="Ca sĩ" required />
+                    <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                        <input
+                            type="text"
+                            name="src"
+                            value={form.src}
+                            onChange={handleInputChange}
+                            placeholder="Link mp3 (hoặc /music/tenfile.mp3)"
+                            style={{flex: 1}}
+                            required
+                        />
+                        <input
+                            type="file"
+                            accept="audio/mp3,audio/mpeg"
+                            style={{width: 180}}
+                            onChange={e => {
+                                if (e.target.files && e.target.files[0]) {
+                                    const file = e.target.files[0];
+                                    setForm(f => ({ ...f, src: `/music/${file.name}` }));
+                                }
+                            }}
+                        />
+                    </div>
+                    {form.src && form.src.startsWith('/music/') && (
+                        <div style={{fontSize: 13, color: '#888', marginLeft: 4}}>Sử dụng file: <b>{form.src.replace('/music/', '')}</b> (bạn cần copy file này vào thư mục <b>public/music</b> nếu chưa có)</div>
+                    )}
+                    <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                        <input
+                            type="text"
+                            name="cover"
+                            value={form.cover}
+                            onChange={handleInputChange}
+                            placeholder="Link ảnh bìa (tùy chọn)"
+                            style={{flex: 1}}
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            style={{width: 180}}
+                            onChange={e => {
+                                if (e.target.files && e.target.files[0]) {
+                                    const file = e.target.files[0];
+                                    setForm(f => ({ ...f, cover: `/music/${file.name}` }));
+                                }
+                            }}
+                        />
+                    </div>
+                    {form.cover && form.cover.startsWith('/music/') && (
+                        <div style={{fontSize: 13, color: '#888', marginLeft: 4}}>Sử dụng file: <b>{form.cover.replace('/music/', '')}</b> (bạn cần copy file này vào thư mục <b>public/music</b> nếu chưa có)</div>
+                    )}
+                    <button type="submit">{editingIndex !== null ? 'Cập nhật' : 'Thêm'}</button>
+                    {editingIndex !== null && <button type="button" onClick={handleCancelEdit}>Hủy</button>}
+                </form>
+                <ul className="music-list">
+                    {musicList.map((song, idx) => (
+                        <li key={idx} style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8}}>
+                            <img src={song.cover || '/logo192.png'} alt="cover" style={{width: 40, height: 40, objectFit: 'cover', borderRadius: 4}} />
+                            <div style={{flex: 1}}>
+                                <b>{song.title}</b> <span style={{color: '#888'}}>{song.artist}</span>
+                                <div style={{fontSize: 12, color: '#aaa'}}>{song.src}</div>
+                            </div>
+                            <button onClick={() => handleEdit(idx)}>Sửa</button>
+                            <button onClick={() => handleDelete(idx)} style={{color: 'red'}}>Xóa</button>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+            <section style={{marginTop: 32}}>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <h3 style={{margin: 0}}>Hiệu ứng hoa rơi</h3>
+                <label className="flower-switch">
+                  <input
+                    type="checkbox"
+                    checked={flowerEffect}
+                    onChange={e => setFlowerEffect(e.target.checked)}
+                  />
+                  <span className="flower-slider"></span>
+                </label>
+              </div>
+              <div style={{color: '#888', fontSize: 15, marginTop: 4}}>
+                Bật hiệu ứng hoa rơi trên toàn trang
+              </div>
+            </section>
+        </div>
+    );
+}
 
 export default AdminDashboard;

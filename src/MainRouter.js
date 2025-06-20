@@ -53,6 +53,12 @@ function MainRouter() {
         return <ProductList onNavigate={setCurrentPage} filterType="flower" title="Mật ong hoa" />;
       case 'products-wild':
         return <ProductList onNavigate={setCurrentPage} filterType="wild" title="Mật ong rừng" />;
+      case 'products-wild-tropical':
+        return <ProductList onNavigate={setCurrentPage} filterType="wild-tropical" title="Mật ong rừng nhiệt đới" />;
+      case 'products-wild-flower':
+        return <ProductList onNavigate={setCurrentPage} filterType="wild-flower" title="Mật ong rừng hoa" />;
+      case 'products-wild-saltwater':
+        return <ProductList onNavigate={setCurrentPage} filterType="wild-saltwater" title="Mật ong rừng ngập mặn" />;
       case 'products-natural':
         return <ProductList onNavigate={setCurrentPage} filterType="natural" title="Mật ong thiên nhiên" />;
       case 'products-pure':

@@ -7,7 +7,7 @@ const songs = [
     title: 'Truc xinh',
     artist: 'Quý Lowkey',
     src: '/music/trucxinh.mp3',
-    cover: '/images/meme1.jpg'
+    cover: '/images/meme1.JPG'
   },
   {
     title: 'Acoustic Breeze',

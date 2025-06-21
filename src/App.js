@@ -9,6 +9,7 @@ import MainRouter from './MainRouter';
 import BeeCursor from './components/BeeCursor';
 import EyeSplash from './components/EyeSplash';
 import MusicPlayer from './components/MusicPlayer';
+import MobileMusicPlayer from './components/MobileMusicPlayer';
 import FlowerEffect from './components/FlowerEffect';
 import FloatingActions from './components/FloatingActions';
 
@@ -26,6 +27,7 @@ function App() {
         </CartProvider>
       </AuthProvider>
       <MusicPlayer />
+      <MobileMusicPlayer />
       <FloatingActions />
     </>
   );

@@ -71,45 +71,45 @@ function Register({ setCurrentPage }) {
   };
 
   return (
-    <main className="register-wrapperMain_content">
-        <nav className="register-bread-crumb clearfix">
-            <div className="register-container">
-                <ul className="register-breadcrumb">
-                    <li className="register-home">
+    <main className="wrapperMain_content">
+        <nav className="bread-crumb clearfix">
+            <div className="container">
+                <ul className="breadcrumb">
+                    <li className="home">
                         <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>
                             <span>Trang chủ</span>
                         </a>
-                        <span className="register-mr_lr">&nbsp;/&nbsp;</span>
+                        <span className="mr_lr">&nbsp;/&nbsp;</span>
                     </li>
                     <li><strong><span>Đăng ký tài khoản</span></strong></li>
                 </ul>
             </div>
         </nav>
-        <section className="register-section wrap_background">
-            <div className="register-container">
-                <div className="register-wrap_background_aside page_login">
-                    <div className="register-row">
-                        <div className="register-col-12 register-col-md-6 register-offset-md-3 register-col-lg-4 register-offset-lg-4">
-                            <div className="register-page-login">
+        <section className="section wrap_background">
+            <div className="container">
+                <div className="wrap_background_aside page_login">
+                    <div className="row">
+                        <div className="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                            <div className="page-login">
                                 <div id="register">
                                     <h1>
                                         Thông tin cá nhân
                                     </h1>
-                                    {error && <div className="register-form-signup" style={{color: 'red'}}>
+                                    {error && <div className="form-signup" style={{color: 'red'}}>
                                         {error}
                                     </div>}
-                                    {success && <div className="register-form-signup" style={{color: 'green'}}>
+                                    {success && <div className="form-signup" style={{color: 'green'}}>
                                         {success}
                                     </div>}
                                     <form onSubmit={handleSubmit}>
-                                        <div className="register-form-signup clearfix">
-                                            <div className="register-row">
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Họ <span className="register-required">*</span></label>
+                                        <div className="form-signup clearfix">
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <fieldset className="form-group">
+                                                        <label>Họ <span className="required">*</span></label>
                                                         <input 
                                                             type="text" 
-                                                            className="register-form-control register-form-control-lg" 
+                                                            className="form-control form-control-lg" 
                                                             name="lastName"
                                                             value={formData.lastName}
                                                             onChange={handleChange}
@@ -118,12 +118,12 @@ function Register({ setCurrentPage }) {
                                                         />
                                                     </fieldset>
                                                 </div>
-                                                <div className="register-col-md-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Tên <span className="register-required">*</span></label>
+                                                <div className="col-md-6">
+                                                    <fieldset className="form-group">
+                                                        <label>Tên <span className="required">*</span></label>
                                                         <input 
                                                             type="text" 
-                                                            className="register-form-control register-form-control-lg" 
+                                                            className="form-control form-control-lg" 
                                                             name="firstName"
                                                             value={formData.firstName}
                                                             onChange={handleChange}
@@ -132,14 +132,14 @@ function Register({ setCurrentPage }) {
                                                         />
                                                     </fieldset>
                                                 </div>
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Số điện thoại <span className="register-required">*</span></label>
+                                                <div className="col-md-12">
+                                                    <fieldset className="form-group">
+                                                        <label>Số điện thoại <span className="required">*</span></label>
                                                         <input 
                                                             placeholder="Số điện thoại" 
                                                             type="text" 
                                                             pattern="\d+"
-                                                            className="register-form-control register-form-control-comment register-form-control-lg"
+                                                            className="form-control form-control-comment form-control-lg"
                                                             name="phone"
                                                             value={formData.phone}
                                                             onChange={handleChange}
@@ -148,14 +148,14 @@ function Register({ setCurrentPage }) {
                                                     </fieldset>
                                                 </div>
                                             </div>
-                                            <div className="register-row">
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Email <span className="register-required">*</span></label>
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <fieldset className="form-group">
+                                                        <label>Email <span className="required">*</span></label>
                                                         <input 
                                                             type="email"
                                                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                                                            className="register-form-control register-form-control-lg" 
+                                                            className="form-control form-control-lg" 
                                                             name="email"
                                                             value={formData.email}
                                                             onChange={handleChange}
@@ -164,13 +164,13 @@ function Register({ setCurrentPage }) {
                                                         />
                                                     </fieldset>
                                                 </div>
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Mật khẩu <span className="register-required">*</span> </label>
+                                                <div className="col-md-12">
+                                                    <fieldset className="form-group">
+                                                        <label>Mật khẩu <span className="required">*</span> </label>
                                                         <div style={{ position: 'relative' }}>
                                                             <input 
                                                                 type={showPassword ? 'text' : 'password'}
-                                                                className="register-form-control register-form-control-lg"
+                                                                className="form-control form-control-lg"
                                                                 name="password"
                                                                 value={formData.password}
                                                                 onChange={handleChange}
@@ -195,13 +195,13 @@ function Register({ setCurrentPage }) {
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
-                                                        <label>Nhập lại mật khẩu <span className="register-required">*</span> </label>
+                                                <div className="col-md-12">
+                                                    <fieldset className="form-group">
+                                                        <label>Nhập lại mật khẩu <span className="required">*</span> </label>
                                                         <div style={{ position: 'relative' }}>
                                                             <input 
                                                                 type={showConfirmPassword ? 'text' : 'password'}
-                                                                className="register-form-control register-form-control-lg"
+                                                                className="form-control form-control-lg"
                                                                 name="confirmPassword"
                                                                 value={formData.confirmPassword}
                                                                 onChange={handleChange}
@@ -227,9 +227,9 @@ function Register({ setCurrentPage }) {
                                                     </fieldset>
                                                 </div>
                                             </div>
-                                            <div className="register-row">
-                                                <div className="register-col-md-12 register-col-lg-12 register-col-sm-12 register-col-xs-12">
-                                                    <fieldset className="register-form-group">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <fieldset className="form-group">
                                                         <label>Ảnh đại diện (không bắt buộc)</label>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: 32, margin: '16px 0' }}>
                                                             <div style={{
@@ -288,18 +288,18 @@ function Register({ setCurrentPage }) {
                                                     </fieldset>
                                                 </div>
                                             </div>
-                                            <div className="register-section register-margin-top-10 register-button_bottom">
+                                            <div className="section margin-top-10 button_bottom">
                                                 <button 
                                                     type="submit"
-                                                    className="register-btn register-btn-style register-btn_50 register-btn_register"
+                                                    className="btn btn-style btn_50 btn_register"
                                                 >
                                                     Đăng ký
                                                 </button>
-                                                <span className="register-or">Bạn đã có tài khoản? Đăng nhập
+                                                <span className="or">Bạn đã có tài khoản? Đăng nhập
                                                     <a href="#" 
                                                         onClick={(e) => { e.preventDefault(); setCurrentPage('login'); }}
                                                         style={{textDecoration: 'underline'}}
-                                                        className="register-btn-link-style register-btn-style register-margin-right-0"
+                                                        className="btn-link-style btn-style margin-right-0"
                                                     >
                                                         tại đây
                                                     </a>
@@ -307,17 +307,17 @@ function Register({ setCurrentPage }) {
                                             </div>
                                         </div>
                                     </form>
-                                    <div className="register-block register-social-login--facebooks">
-                                        <p className="register-a-center">
+                                    <div className="block social-login--facebooks">
+                                        <p className="a-center">
                                             Hoặc đăng nhập bằng
                                         </p>
-                                        <a href="javascript:void(0)" className="register-social-login--facebook"
+                                        <a href="javascript:void(0)" className="social-login--facebook"
                                             onClick={() => window.loginFacebook()}>
                                             <img width="129px" height="37px"
                                                 alt="facebook-login-button"
                                                 src="//bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"/>
                                         </a>
-                                        <a href="javascript:void(0)" className="register-social-login--google"
+                                        <a href="javascript:void(0)" className="social-login--google"
                                             onClick={() => window.loginGoogle()}>
                                             <img width="129px" height="37px"
                                                 alt="google-login-button"

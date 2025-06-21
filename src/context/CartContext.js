@@ -56,6 +56,14 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    if (user) {
+      const userCartKey = `cartItems_${user.email}`;
+      localStorage.removeItem(userCartKey);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -64,7 +72,8 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         isCartOpen,
-        setIsCartOpen
+        setIsCartOpen,
+        clearCart,
       }}
     >
       {children}

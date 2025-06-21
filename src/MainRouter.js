@@ -147,6 +147,7 @@ function MainRouter() {
       <Footer setCurrentPage={setCurrentPage} />
       {/* Icon message fixed góc trái */}
       <div
+        className="contact-admin-icon"
         style={iconStyle}
         onMouseEnter={() => setShowContact(true)}
         onMouseLeave={() => setShowContact(false)}

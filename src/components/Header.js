@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-
+import './Header.css';
 function Header({ setCurrentPage }) {
   const [activeMenu, setActiveMenu] = useState('home');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Debug logs
@@ -41,6 +41,12 @@ function Header({ setCurrentPage }) {
     setIsMobileMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    setIsMobileMenuOpen(false);
+    setCurrentPage('home');
+  };
+
   const handleAccountClick = (page) => {
     handleMenuClick(page);
   };
@@ -67,22 +73,38 @@ function Header({ setCurrentPage }) {
           <div className="row">
             <div className="col-lg-5 col-md-12 col-12">
               <div className="header_menu clearfix">
+                {/* Mobile Menu */}
                 {isMobileMenuOpen && (
                   <>
                     <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
                     <div className="navigation-head menu_mobile open_sidebar_menu">
-                      <button
-                        className="close-mobile-menu"
-                        style={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 32, color: '#fff', zIndex: 1001, cursor: 'pointer' }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        aria-label="Đóng menu"
-                      >
-                        ×
-                      </button>
                       <nav className="nav-horizontal">
                         <div className="account_mb">
-                          <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('login'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path></svg>Đăng nhập</a>
-                          <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('register'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"></path></svg>Đăng ký</a>
+                          {user ? (
+                            <>
+                              <div className="user-info-mobile">
+                                <img src={user.avatar || '/avt/avt-user.jpg'} alt="avatar" className="user-avatar-mobile" />
+                                <div className="user-details-mobile">
+                                  <span className="user-name-mobile">{user.name}</span>
+                                  <span className="user-role-mobile">{user.role}</span>
+                                </div>
+                                <button
+                                  className="close-mobile-menu"
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  aria-label="Đóng menu"
+                                > × </button>
+                              </div>
+                              <a onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436h-40c-13.3 0-24-10.7-24-24V100c0-13.3 10.7-24 24-24h40c13.3 0 24 10.7 24 24v312c0 13.3-10.7 24-24 24z" /></svg>
+                                Đăng xuất
+                              </a>
+                            </>
+                          ) : (
+                            <>
+                              <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('login'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z" /></svg>Đăng nhập</a>
+                              <a onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('register'); }}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z" /></svg>Đăng ký</a>
+                            </>
+                          )}
                         </div>
                         <ul className="item_big">
                           <li className="nav-item active">
@@ -136,40 +158,28 @@ function Header({ setCurrentPage }) {
                               <span>Giới thiệu</span>
                             </a>
                           </li>
-                         
+                          {user && (
+                            <li className="nav-item">
+                              <a className="a-img" onClick={() => { setIsMobileMenuOpen(false); handleMenuClick('profile'); }} title="Cài đặt">
+                                <span>Cài đặt</span>
+                              </a>
+                            </li>
+                          )}
                         </ul>
                       </nav>
                     </div>
                   </>
                 )}
-                <div className={`menu_mobile navigation-head${isMobileMenuOpen ? ' open' : ''}`}>
-                  {isMobileMenuOpen && (
-                    <>
-                      <div className="mobile-menu-overlay" onClick={handleOverlayClick}></div>
-                      <div className="mobile-menu-header">
-                        <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>×</button>
-                      </div>
-                    </>
-                  )}
+                {/* Desktop Menu */}
+                <div className="navigation-head d-none d-lg-block">
                   <nav className="nav-horizontal">
-                    <div className="account_mb">
-                      <a onClick={() => handleAccountClick('login')}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                          <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z" />
-                        </svg>Đăng nhập
-                      </a>
-                      <a onClick={() => handleAccountClick('register')}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                          <path d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"></path></svg>Đăng ký
-                      </a>
-                    </div>
                     <ul className="item_big">
                       <li className={`nav-item ${activeMenu === 'home' ? 'active' : ''}`}>
                         <a className="a-img" onClick={() => handleMenuClick('home')} title="Trang chủ">
                           <span>Trang chủ</span>
                         </a>
                       </li>
-                      <li className={`nav-item level0 ${activeMenu === 'products' ? 'active' : ''}`}>
+                      <li className={`nav-item level0 ${activeMenu.startsWith('products') ? 'active' : ''}`}>
                         <a className="a-img" onClick={() => handleMenuClick('products')} title="Sản phẩm">
                           Sản phẩm
                           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="svg-inline--fa fa-caret-down fa-w-10">
@@ -212,11 +222,12 @@ function Header({ setCurrentPage }) {
                           <span>Liên hệ</span>
                         </a>
                       </li>
-                      <li className={`nav-item ${activeMenu === 'about' ? 'active' : ''}`}>
+                      <li className={`nav-item ${activeMenu === 'introduct' ? 'active' : ''}`}>
                         <a className="a-img" onClick={() => handleMenuClick('introduct')} title="Giới thiệu">
                           <span>Giới thiệu</span>
                         </a>
                       </li>
+
                     </ul>
                   </nav>
                 </div>

@@ -1,9 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import CartHeader from '../components/CartHeader';
 import './Introduct.css';
 
+const bannerImages = [
+  './images/slider-01.jpg',
+  './images/slider-02.jpg',
+  './images/slider-03.jpg',
+  './images/wallpaperflare-com-wallpaper-1.jpg',
+];
+
 const images = {
-  banner: './images/slider-01.jpg',
   value1: 'https://cdn-icons-png.flaticon.com/512/616/616494.png',
   value2: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
   value3: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
@@ -16,6 +22,15 @@ function Introduct() {
   const icon1Ref = useRef();
   const icon2Ref = useRef();
   const icon3Ref = useRef();
+
+  const [currentBanner, setCurrentBanner] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % bannerImages.length);
+    }, 5000); // Chuyển banner mỗi 5 giây
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const icons = [icon1Ref, icon2Ref, icon3Ref];
@@ -39,7 +54,14 @@ function Introduct() {
       <CartHeader />
       {/* Banner section */}
       <section className="intro-banner-section">
-        <img src={images.banner} alt="Banner" className="intro-banner-img" />
+        {bannerImages.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt={`Banner ${index + 1}`}
+            className={`intro-banner-img ${currentBanner === index ? 'active' : ''}`}
+          />
+        ))}
         <div className="intro-banner-overlay">
           <h1 className="intro-banner-title" style={{color: '#fbf6d7'}}>Quý Honey Bee<br /><span>Chất lượng - Uy tín - Đẳng cấp</span></h1>
         </div>

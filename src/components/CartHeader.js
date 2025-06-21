@@ -5,7 +5,7 @@ function CartHeader() {
   const { cartItems, setIsCartOpen } = useCart();
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   return (
-			<div className="hover_cart_fixed d-none d-lg-block" bis_skin_checked="1">
+			<div className="hover_cart_fixed" bis_skin_checked="1">
 				<div className="cart_click " bis_skin_checked="1" onClick={() => setIsCartOpen(true)} style={{ cursor: 'pointer' }}>
 					<div className="img_hover_cart default_cart" bis_skin_checked="1">
 						<svg xmlns="http://www.w3.org/2000/svg" width="33" height="24" viewBox="0 0 33 24" fill="none">

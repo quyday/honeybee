@@ -921,4 +921,44 @@
     .admin-dashboard.sidebar-open .sidebar-overlay {
         display: block;
     }
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .dashboard-main {
+        padding: 1rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-modal {
+        width: 95%;
+        max-width: none;
+    }
+    .product-form-layout {
+        flex-direction: column;
+    }
+    .form-left-panel, .form-right-panel {
+        width: 100%;
+    }
+    .modal-box.product-modal {
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+}
+
+/* Sidebar collapsed state adjustments */
+body.admin-sidebar-collapsed .music-player {
+    left: 90px; /* Move music player to avoid overlapping the collapsed sidebar */
+    transition: left 0.3s ease;
 } 

@@ -311,3 +311,76 @@ font-weight: bolder;
 .section_bestsale .button_readmore a button:hover {
     cursor: pointer;
 }
+
+.section_bestsale .button_readmore a button:hover {
+color: #fdd835;
+}
+
+/* Horizontal Scrolling Lists (Bestsellers & Blog) */
+.bestsale-list,
+.blog-list {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bestsale-list::-webkit-scrollbar,
+.blog-list::-webkit-scrollbar { 
+    display: none;
+}
+
+.bestsale-list .item,
+.blog-list .blog-list-item {
+  flex: 0 0 270px;
+  margin-right: 20px;
+}
+
+.bestsale-list .item:last-child,
+.blog-list .blog-list-item:last-child {
+  margin-right: 0;
+}
+
+.item_product_main .product-thumbnail {
+    height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item_product_main .product-thumbnail .image_thumb {
+    height: 100%;
+}
+
+/* Mobile-specific styles for snapping */
+@media (max-width: 767px) {
+  .bestsale-list,
+  .blog-list {
+    scroll-snap-type: x mandatory;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .bestsale-list .item,
+  .blog-list .blog-list-item {
+    flex-basis: 80%;
+    scroll-snap-align: start;
+  }
+}
+
+/* Desktop styles - revert to a grid */
+@media (min-width: 768px) {
+    .bestsale-list,
+    .blog-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        overflow-x: hidden;
+        padding: 10px 0;
+    }
+    .bestsale-list .item,
+    .blog-list .blog-list-item {
+        margin-right: 0;
+    }
+}

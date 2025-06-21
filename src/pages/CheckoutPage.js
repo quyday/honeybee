@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 function formatPrice(price) {
   return price.toLocaleString('vi-VN') + ' vnđ';
@@ -12,14 +13,23 @@ function randomOrderId() {
 }
 
 function CheckoutPage({ setCurrentPage }) {
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
+  const { user } = useAuth();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [payment, setPayment] = useState('cod');
   const [msg, setMsg] = useState('');
   const [orderInfo, setOrderInfo] = useState(null); // Thông tin đơn hàng vừa đặt
-  const total = cartItems.reduce((sum, item) => sum + Number(item.price.replace(/\D/g, '')) * item.quantity, 0);
+  const total = cartItems.reduce((sum, item) => sum + Number(String(item.price).replace(/\D/g, '')) * item.quantity, 0);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || '');
+      setPhone(user.phone || '');
+      setAddress(user.address || '');
+    }
+  }, [user]);
 
   // Hàm kiểm tra tên chỉ chứa chữ cái và khoảng trắng
   const handleNameChange = (e) => {
@@ -63,14 +73,16 @@ function CheckoutPage({ setCurrentPage }) {
       address,
       payment,
       date: new Date().toLocaleString('vi-VN'),
+      email: user ? user.email : 'guest', // Gán email người dùng vào đơn hàng
     };
     // Lưu vào localStorage
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
     orders.unshift(order);
     localStorage.setItem('orders', JSON.stringify(orders));
+    window.dispatchEvent(new Event('orders-updated'));
     setOrderInfo(order);
     setMsg('Đặt hàng thành công!');
-    // Không chuyển trang ngay, hiện sidebar
+    clearCart(); // Xóa giỏ hàng sau khi đặt thành công
   };
 
   // Style giống profile
@@ -100,7 +112,7 @@ function CheckoutPage({ setCurrentPage }) {
     top: 145,
     right: 0,
     width: 370,
-    height: '60vh',
+    height: 'auto',
     background: '#fff',
     boxShadow: '-2px 0 16px #ffe08299',
     zIndex: 1001,
@@ -135,9 +147,9 @@ function CheckoutPage({ setCurrentPage }) {
                   <tr key={item.id} style={{ background: '#fff', borderBottom: '1px solid #ffe082' }}>
                     <td style={{ padding: 10, textAlign: 'center' }}><img src={item.image} alt={item.name} style={{ width: 54, height: 54, borderRadius: 8, objectFit: 'cover', boxShadow: '0 1px 4px #ffe08255' }} /></td>
                     <td style={{ padding: 10 }}>{item.name}</td>
-                    <td style={{ padding: 10, color: '#f5af1a', fontWeight: 'bold', whiteSpace: 'nowrap' }}>{Number(item.price.replace(/\D/g, '')).toLocaleString('vi-VN')} vnđ</td>
+                    <td style={{ padding: 10, color: '#f5af1a', fontWeight: 'bold', whiteSpace: 'nowrap' }}>{Number(String(item.price).replace(/\D/g, '')).toLocaleString('vi-VN')} vnđ</td>
                     <td style={{ padding: 10, textAlign: 'center' }}>{item.quantity}</td>
-                    <td style={{ padding: 10, color: '#b8860b', fontWeight: 'bold', whiteSpace: 'nowrap' }}>{(Number(item.price.replace(/\D/g, '')) * item.quantity).toLocaleString('vi-VN')} vnđ</td>
+                    <td style={{ padding: 10, color: '#b8860b', fontWeight: 'bold', whiteSpace: 'nowrap' }}>{(Number(String(item.price).replace(/\D/g, '')) * item.quantity).toLocaleString('vi-VN')} vnđ</td>
                   </tr>
                 ))}
               </tbody>
@@ -173,6 +185,18 @@ function CheckoutPage({ setCurrentPage }) {
             <option value="bank">Chuyển khoản ngân hàng</option>
             <option value="momo">Ví MoMo</option>
           </select>
+          {payment === 'bank' && (
+            <div className="qr-code-container">
+              <img src="/maQr/Mbbank.jpg" alt="MB Bank QR Code" />
+              <p>Quét mã để thanh toán</p>
+            </div>
+          )}
+          {payment === 'momo' && (
+            <div className="qr-code-container">
+              <img src="/maQr/Momo.jpg" alt="MoMo QR Code" />
+              <p>Quét mã để thanh toán</p>
+            </div>
+          )}
           <button type="submit" style={{ width: '100%', padding: 14, background: '#f5af1a', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 'bold', fontSize: 18, marginTop: 8, boxShadow: '0 2px 8px #ffe08255', letterSpacing: 1, cursor: 'pointer', transition: 'background 0.2s' }}>Thanh toán</button>
           {msg && <div style={{ color: msg.includes('thành công') ? 'green' : 'red', marginTop: 14, fontWeight: 500 }}>{msg}</div>}
         </form>

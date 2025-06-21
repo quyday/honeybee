@@ -10,6 +10,7 @@ import BeeCursor from './components/BeeCursor';
 import EyeSplash from './components/EyeSplash';
 import MusicPlayer from './components/MusicPlayer';
 import FlowerEffect from './components/FlowerEffect';
+import FloatingActions from './components/FloatingActions';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         </CartProvider>
       </AuthProvider>
       <MusicPlayer />
+      <FloatingActions />
     </>
   );
 }

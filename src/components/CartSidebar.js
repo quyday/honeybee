@@ -4,7 +4,10 @@ import "./CartSidebar.css";
 
 const CartSidebar = ({ setCurrentPage }) => {
   const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity } = useCart();
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cartItems.reduce((sum, item) => {
+    const price = Number(String(item.price).replace(/\D/g, ''));
+    return sum + price * item.quantity;
+  }, 0);
   if (!isCartOpen) return null;
   return (
     <div className="cart-sidebar">
@@ -20,7 +23,7 @@ const CartSidebar = ({ setCurrentPage }) => {
                 <img src={item.image} alt={item.name} className="cart-item__img" />
                 <div className="cart-item__info">
                   <div className="cart-item__name">{item.name}</div>
-                  <div className="cart-item__price">{item.price.toLocaleString() } vnđ</div>
+                  <div className="cart-item__price">{Number(String(item.price).replace(/\D/g, '')).toLocaleString('vi-VN')} vnđ</div>
                   <div className="cart-item__qty-group">
                     <button className="cart-item__qty-btn" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
                     <span className="cart-item__qty">{item.quantity}</span>
@@ -33,7 +36,7 @@ const CartSidebar = ({ setCurrentPage }) => {
           </div>
           <div className="cart-sidebar__total-row">
             <span className="cart-sidebar__total-label">Tổng cộng:</span>
-            <span className="cart-sidebar__total-value">{total.toLocaleString() + '.000'} vnđ</span>
+            <span className="cart-sidebar__total-value">{total.toLocaleString('vi-VN')} vnđ</span>
           </div>
           <button className="cart-sidebar__checkout" onClick={() => { setIsCartOpen(false); setCurrentPage && setCurrentPage('cart'); }}>Tiến hành thanh toán</button>
         </div>

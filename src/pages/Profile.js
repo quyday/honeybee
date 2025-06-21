@@ -9,11 +9,27 @@ import AdminDashboard from './AdminDashboard';
 export { OrderHistoryTable, UserManagement, ChangePasswordTab, ProfileInfo };
 
 function OrderHistoryTable() {
+  const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState('');
   const { user } = useAuth();
   
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  useEffect(() => {
+    const loadOrders = () => {
+      const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+      setOrders(storedOrders);
+    };
+
+    loadOrders(); // Tải lần đầu
+
+    window.addEventListener('orders-updated', loadOrders); // Lắng nghe sự kiện
+
+    return () => {
+      window.removeEventListener('orders-updated', loadOrders); // Dọn dẹp listener
+    };
+  }, []);
+
   const filteredOrders = orders.filter(order => {
+    if (!user) return false;
     if (user.role === 'admin') {
       return order.name.toLowerCase().includes(search.toLowerCase()) ||
              order.items.some(item => item.name.toLowerCase().includes(search.toLowerCase()));
@@ -32,49 +48,51 @@ function OrderHistoryTable() {
   };
 
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ color: '#333', fontWeight: 'bold', fontSize: 18, flex: 1 }}>
-          {user.role === 'admin' ? `Tất cả đơn hàng (${filteredOrders.length})` : 'Lịch sử đặt hàng của bạn'}
-        </div>
-        <button onClick={handleExportExcel} style={{ background: '#007bff', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', fontWeight: 'bold', fontSize: 15, cursor: 'pointer' }}>Xuất Excel</button>
+    <div className="table-container">
+      <h3 className="table-title">
+        {user.role === 'admin' ? `Tất cả đơn hàng (${filteredOrders.length})` : 'Lịch sử đặt hàng của bạn'}
+      </h3>
+      <div className="table-controls">
+        <input placeholder='Tìm kiếm...' value={search} onChange={e => setSearch(e.target.value)} className="search-input" />
+        <button onClick={handleExportExcel} className="btn btn-primary">Xuất Excel</button>
       </div>
-      <input placeholder='Tìm kiếm...' value={search} onChange={e => setSearch(e.target.value)} style={{ width: 250, marginBottom: 12, padding: '8px 12px', border: '1.5px solid #ccc', borderRadius: 8, background: '#fff' }} />
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Mã đơn</th>
-            <th>Khách hàng</th>
-            {user.role === 'admin' && <th>Email</th>}
-            <th>Địa chỉ</th>
-            <th>Sản phẩm</th>
-            <th>Tổng tiền</th>
-            <th>Ngày đặt</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredOrders.map((order, idx) => (
-            <tr key={order.id}>
-              <td style={{fontWeight: 'bold', color: '#007bff' }}>#{order.id}</td>
-              <td>{order.name}</td>
-              {user.role === 'admin' && <td>{order.email}</td>}
-              <td>{order.address}</td>
-              <td>{order.items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</td>
-              <td style={{fontWeight: 'bold' }}>{Number(order.total.toString().replace(/\D/g, '')).toLocaleString('vi-VN')} vnđ</td>
-              <td>{order.date}</td>
+      <div className="table-wrapper">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Mã đơn</th>
+              <th>Khách hàng</th>
+              {user.role === 'admin' && <th>Email</th>}
+              <th>Địa chỉ</th>
+              <th>Sản phẩm</th>
+              <th>Tổng tiền</th>
+              <th>Ngày đặt</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredOrders.map((order, idx) => (
+              <tr key={order.id}>
+                <td className="order-id">#{order.id}</td>
+                <td>{order.name}</td>
+                {user.role === 'admin' && <td>{order.email}</td>}
+                <td>{order.address}</td>
+                <td>{order.items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</td>
+                <td className="order-total">{Number(order.total.toString().replace(/\D/g, '')).toLocaleString('vi-VN')} vnđ</td>
+                <td>{order.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
 function NotificationTab() {
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ color: '#b8860b', fontWeight: 'bold', fontSize: 18, marginBottom: 16 }}>Thông báo</div>
-      <ul style={{ paddingLeft: 18 }}>
+    <div className="notification-tab">
+      <h3>Thông báo</h3>
+      <ul>
         <li>Đơn hàng #1234 vừa được đặt thành công.</li>
         <li>Người dùng mới đăng ký: Nguyễn Văn C.</li>
         <li>Hệ thống sẽ bảo trì vào 23:00 tối nay.</li>
@@ -90,9 +108,6 @@ function ChangePasswordTab() {
   const [msg, setMsg] = useState('');
   const { user, login } = useAuth();
 
-  console.log('Render ChangePasswordTab');
-
-  // Hàm đổi mật khẩu cho user/admin trong localStorage
   const updatePassword = (email, newPassword) => {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     users = users.map(u =>
@@ -101,14 +116,12 @@ function ChangePasswordTab() {
         : u
     );
     localStorage.setItem('users', JSON.stringify(users));
-    // Nếu là admin, cập nhật cả admin_profile
     if (user && user.role === 'admin') {
       const adminProfile = JSON.parse(localStorage.getItem('admin_profile') || '{}');
       if (adminProfile.email && adminProfile.email.toLowerCase() === email.toLowerCase()) {
         localStorage.setItem('admin_profile', JSON.stringify({ ...adminProfile, password: newPassword }));
       }
     }
-    // Cập nhật user hiện tại trong localStorage
     const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
     if (currentUser.email && currentUser.email.toLowerCase() === email.toLowerCase()) {
       localStorage.setItem('user', JSON.stringify({ ...currentUser, password: newPassword }));
@@ -129,7 +142,6 @@ function ChangePasswordTab() {
       setMsg('Mật khẩu mới phải từ 6 ký tự!');
       return;
     }
-    // Kiểm tra mật khẩu cũ
     let users = JSON.parse(localStorage.getItem('users')) || [];
     const found = users.find(u => u.email.toLowerCase() === user.email.toLowerCase() && u.password === oldPass);
     if (!found) {
@@ -139,32 +151,31 @@ function ChangePasswordTab() {
     updatePassword(user.email, newPass);
     setMsg('Đổi mật khẩu thành công!');
     setOldPass(''); setNewPass(''); setConfirmPass('');
-    // Đăng nhập lại để cập nhật context
     login(user.email, newPass);
   };
 
   return (
-    <form style={{ width: 400, position: 'relative' }} onSubmit={handleSubmit}>
+    <form className="profile-form" onSubmit={handleSubmit}>
       <PasswordInput
         value={oldPass}
         onChange={e => setOldPass(e.target.value)}
         placeholder="Mật khẩu cũ"
-        style={{ border: '1.5px solid #ccc', borderRadius: 8, padding: '10px 14px', width: '100%', marginBottom: '1rem' }}
+        className="form-control"
       />
       <PasswordInput
         value={newPass}
         onChange={e => setNewPass(e.target.value)}
         placeholder="Mật khẩu mới"
-        style={{ border: '1.5px solid #ccc', borderRadius: 8, padding: '10px 14px', width: '100%', marginBottom: '1rem' }}
+        className="form-control"
       />
       <PasswordInput
         value={confirmPass}
         onChange={e => setConfirmPass(e.target.value)}
         placeholder="Nhập lại mật khẩu mới"
-        style={{ border: '1.5px solid #ccc', borderRadius: 8, padding: '10px 14px', width: '100%', marginBottom: '1rem' }}
+        className="form-control"
       />
-      <button type='submit' style={{ background: '#007bff', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, marginTop: 8, cursor: 'pointer' }}>Đổi mật khẩu</button>
-      {msg && <div style={{ color: msg.includes('thành công') ? 'green' : 'red', marginTop: 8 }}>{msg}</div>}
+      <button type='submit' className="btn btn-primary">Đổi mật khẩu</button>
+      {msg && <div className={`form-message ${msg.includes('thành công') ? 'success' : 'error'}`}>{msg}</div>}
     </form>
   );
 }
@@ -185,10 +196,10 @@ function UserManagement({ currentAdminEmail }) {
     }
   };
 
-  if (users.length === 0) return <div style={{ color: '#333', fontWeight: 'bold', fontSize: 18 }}>Không có người dùng nào khác.</div>;
+  if (users.length === 0) return <h3>Không có người dùng nào khác.</h3>;
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="table-container">
       <table className="data-table">
         <thead>
           <tr>
@@ -207,7 +218,7 @@ function UserManagement({ currentAdminEmail }) {
               <td>{user.phone}</td>
               <td>{user.role}</td>
               <td>
-                <button style={{ background: '#dc3545', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', fontWeight: 'bold', fontSize: 15, cursor: 'pointer' }} onClick={() => handleDeleteUser(user.email)}>
+                <button className="btn btn-danger" onClick={() => handleDeleteUser(user.email)}>
                   Xóa
                 </button>
               </td>
@@ -241,42 +252,33 @@ function ProfileInfo() {
     }
   };
   
-  const inputStyle = {
-    width: '100%',
-    padding: '10px 14px',
-    border: '1.5px solid #ccc',
-    borderRadius: 8,
-    fontSize: 16,
-    marginBottom: 14,
-    boxSizing: 'border-box',
-  };
-  const labelStyle = {
-    fontWeight: 'bold',
-    color: '#333',
-    marginTop: 12,
-    marginBottom: 4,
-    fontSize: 15,
-  };
-
   if (!profileUser) return null;
 
   return (
-    <form className="profile-form" style={{ maxWidth: 500 }}>
-      <div style={labelStyle}>Họ tên</div>
-      <input value={profileUser.name} disabled={!editMode} style={inputStyle} onChange={e => setProfileUser({ ...profileUser, name: e.target.value })} />
-      <div style={labelStyle}>Email</div>
-      <input value={profileUser.email} disabled style={inputStyle} />
-      <div style={labelStyle}>Số điện thoại</div>
-      <input value={profileUser.phone || ''} disabled={!editMode} style={inputStyle} onChange={e => setProfileUser({ ...profileUser, phone: e.target.value })} />
-      <div style={labelStyle}>Địa chỉ</div>
-      <input value={profileUser.address || ''} disabled={!editMode} style={inputStyle} onChange={e => setProfileUser({ ...profileUser, address: e.target.value })} />
+    <>
+      <div className="form-group">
+        <label className="form-label">Họ tên</label>
+        <input className="form-control" value={profileUser.name} disabled={!editMode} onChange={e => setProfileUser({ ...profileUser, name: e.target.value })} />
+      </div>
+      <div className="form-group">
+        <label className="form-label">Email</label>
+        <input className="form-control" value={profileUser.email} disabled />
+      </div>
+      <div className="form-group">
+        <label className="form-label">Số điện thoại</label>
+        <input className="form-control" value={profileUser.phone || ''} disabled={!editMode} onChange={e => setProfileUser({ ...profileUser, phone: e.target.value })} />
+      </div>
+      <div className="form-group">
+        <label className="form-label">Địa chỉ</label>
+        <input className="form-control" value={profileUser.address || ''} disabled={!editMode} onChange={e => setProfileUser({ ...profileUser, address: e.target.value })} />
+      </div>
       
       {!editMode ? (
-        <button type="button" style={{ background: '#007bff', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, marginTop: 8, cursor: 'pointer' }} onClick={() => setEditMode(true)}>Chỉnh sửa</button>
+        <button type="button" className="btn btn-primary" onClick={() => setEditMode(true)}>Chỉnh sửa</button>
       ) : (
-        <button type="button" style={{ background: '#28a745', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, marginTop: 8, cursor: 'pointer' }} onClick={handleSaveProfile}>Lưu thay đổi</button>
+        <button type="button" className="btn btn-success" onClick={handleSaveProfile}>Lưu thay đổi</button>
       )}
-    </form>
+    </>
   );
 }
 
@@ -293,14 +295,12 @@ function Profile({ setCurrentPage }) {
       setCurrentPage('login');
       return;
     }
-    // For non-admin users, set their profile
     if (user.role !== 'admin') {
         setProfileUser(user);
         setAvatar(user.avatar || null);
     }
   }, [user, setCurrentPage]);
   
-  // If user is admin, render the new dashboard
   if (user && user.role === 'admin') {
       return <AdminDashboard setCurrentPage={setCurrentPage} />;
   }
@@ -318,107 +318,20 @@ function Profile({ setCurrentPage }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result);
-        // This should be updated to also save for non-admin user
-        localStorage.setItem('user_avatar', reader.result);
+        const result = reader.result;
+        setAvatar(result);
+        // Also update user in context and local storage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        users = users.map(u => u.email === user.email ? { ...u, avatar: result } : u);
+        localStorage.setItem('users', JSON.stringify(users));
+        const updatedUser = { ...user, avatar: result };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setProfileUser(updatedUser);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveProfile = () => {
-    if (profileUser && profileUser.email) {
-      let users = JSON.parse(localStorage.getItem('users')) || [];
-      users = users.map(u =>
-        u.email.toLowerCase() === profileUser.email.toLowerCase()
-          ? { ...u, name: profileUser.name, phone: profileUser.phone, address: profileUser.address }
-          : u
-      );
-      localStorage.setItem('users', JSON.stringify(users));
-      localStorage.setItem('user', JSON.stringify({ ...profileUser }));
-      if (profileUser.role === 'admin') {
-        localStorage.setItem('admin_profile', JSON.stringify(profileUser));
-      }
-    }
-  };
-
-  const bgStyle = {
-    minHeight: '100vh',
-    background: 'url(https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80) center/cover no-repeat fixed',
-    padding: '40px 0',
-  };
-  const containerStyle = {
-    display: 'flex',
-    maxWidth: 900,
-    margin: '40px auto',
-    background: 'rgba(255,251,231,0.97)',
-    borderRadius: 16,
-    boxShadow: '0 2px 16px #ffe08255',
-    minHeight: 480,
-    overflow: 'hidden',
-  };
-  const sidebarStyle = {
-    width: 220,
-    background: '#fff3c0',
-    borderRight: '2px solid #ffe082',
-    padding: '32px 0 32px 0',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-  };
-  const menuItemStyle = isActive => ({
-    padding: '14px 32px',
-    background: isActive ? '#f5af1a' : 'transparent',
-    color: isActive ? '#fff' : '#b8860b',
-    fontWeight: isActive ? 'bold' : 'normal',
-    border: 'none',
-    outline: 'none',
-    cursor: 'pointer',
-    fontSize: 16,
-    textAlign: 'left',
-    transition: 'background 0.2s',
-  });
-  const contentStyle = {
-    flex: 1,
-    padding: '40px 48px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    background: 'transparent',
-  };
-  const avatarStyle = {
-    width: 90,
-    height: 90,
-    borderRadius: '50%',
-    objectFit: 'cover',
-    boxShadow: '0 2px 8px #ffe082',
-    border: '3px solid #f5af1a',
-    marginBottom: 12,
-    background: '#fff',
-    cursor: 'pointer',
-    display: 'block',
-  };
-  const avatarWrap = {
-    display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16,
-  };
-  const modalStyle = {
-    position: 'fixed',
-    top: 0, left: 0, right: 0, bottom: 0,
-    background: 'rgba(0,0,0,0.2)',
-    zIndex: 1000,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-  };
-  const modalBox = {
-    background: '#fff',
-    borderRadius: 12,
-    padding: 32,
-    minWidth: 320,
-    boxShadow: '0 2px 16px #ffe08299',
-    textAlign: 'center',
-  };
-
-  // The menu for regular users
   const menuItems = [
     { key: 'profile', label: 'Thông tin cá nhân' },
     { key: 'orders', label: 'Lịch sử đặt hàng' },
@@ -430,44 +343,40 @@ function Profile({ setCurrentPage }) {
   if (!profileUser) return <div>Đang tải...</div>;
 
   return (
-    <div style={bgStyle}>
-      <div style={containerStyle}>
-        {/* Sidebar for regular user */}
-        <aside style={sidebarStyle}>
-          <div style={{ position: 'relative' }}>
-            <div style={{ fontWeight: 'bold', color: '#b8860b', fontSize: 18, textAlign: 'center', marginBottom: 32 }}>
-              MENU
-            </div>
+    <>
+      <div className="profile-container">
+        <aside className="profile-sidebar">
+          <div className="profile-sidebar-header">
+            <span className="profile-sidebar-title">MENU</span>
             <img 
-              src="./images/bee_1.png" 
-              alt="Bee 1" 
-              className="bee-icon bee-icon-1"
+              src="/images/bee_1.png" 
+              alt="Bee" 
+              className="bee-icon-menu"
             />
           </div>
           {menuItems.map(item => (
             <button
               key={item.key}
-              style={menuItemStyle(activeMenu === item.key)}
+              className={`profile-menu-item ${activeMenu === item.key ? 'active' : ''}`}
               onClick={() => {
                 if (item.key === 'logout') handleLogout();
                 else setActiveMenu(item.key);
               }}
             >
-              {item.label}
+              <span>{item.label}</span>
+              {activeMenu === item.key && item.key === 'profile' && <img src="/images/bee_2.png" alt="Bee" className="bee-icon-menu-item"/>}
             </button>
           ))}
         </aside>
         
-        {/* Content for regular user */}
-        <section style={contentStyle}>
+        <section className="profile-content">
           {activeMenu === 'profile' && (
-            <form className="profile-form" style={{ width: 350 }}>
-              <div style={avatarWrap}>
+            <form className="profile-form">
+              <div className="avatar-wrapper" onClick={() => fileInputRef.current && fileInputRef.current.click()}>
                  <img
                     src={avatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(profileUser.name)}
                     alt="avatar"
-                    style={avatarStyle}
-                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    className="profile-avatar"
                     title="Click để đổi ảnh đại diện"
                   />
                   <input
@@ -487,15 +396,17 @@ function Profile({ setCurrentPage }) {
         </section>
       </div>
       {showLogoutConfirm && (
-        <div style={modalStyle}>
-          <div style={modalBox}>
-            <div style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 16 }}>Bạn có chắc chắn muốn đăng xuất?</div>
-            <button style={{ background: '#f5af1a', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, marginRight: 12, cursor: 'pointer' }} onClick={confirmLogout}>Đăng xuất</button>
-            <button style={{ background: '#eee', color: '#b8860b', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 'bold', fontSize: 16, cursor: 'pointer' }} onClick={() => setShowLogoutConfirm(false)}>Hủy</button>
+        <div className="logout-modal">
+          <div className="logout-modal-box">
+            <h3>Bạn có chắc chắn muốn đăng xuất?</h3>
+            <div className="modal-buttons">
+              <button className="btn btn-primary" onClick={confirmLogout}>Đăng xuất</button>
+              <button className="btn btn-secondary" onClick={() => setShowLogoutConfirm(false)}>Hủy</button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

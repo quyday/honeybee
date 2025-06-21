@@ -139,7 +139,7 @@ function Footer({ setCurrentPage }) {
         </div>
       </div>
 
-      <a href="#" className="backtop" title="Lên đầu trang" style={{bottom: '52px'}}>
+      <a href="#" className="backtop" title="Lên đầu trang" style={{bottom: '60px', right: '2626px'}}>
         <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="angle-up" role="img"
           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="svg-inline--fa fa-angle-up fa-w-10">
           <path fill="currentColor"

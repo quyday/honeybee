@@ -3,6 +3,7 @@ import './AdminDashboard.css';
 import { useAuth } from '../context/AuthContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, BarChart, Bar } from 'recharts';
 import { OrderHistoryTable, UserManagement, ChangePasswordTab, ProfileInfo } from './AdminShared';
+import Admin from './Admin';
 
 const statusMap = {
     'In Transit': 'in-transit',
@@ -104,13 +105,7 @@ function AdminDashboard({ setCurrentPage }) {
                     </div>
                 );
             case 'profile':
-                return (
-                    <div className="data-table-container with-bees">
-                        <h2>Thông tin cá nhân</h2>
-                        <ProfileInfo />
-                        <BeeDecorations />
-                    </div>
-                );
+                return <ProfileInfo />;
             case 'changepass':
                 return (
                      <div className="data-table-container with-bees">
@@ -122,8 +117,7 @@ function AdminDashboard({ setCurrentPage }) {
             case 'settings':
                 return <SettingsTab />;
             case 'admin-intro':
-                 setCurrentPage('admin');
-                 return null;
+                return <Admin user={user} summary={summary} />;
             default:
                 return <DashboardView summary={summary} orders={orders} chartData={chartData} />;
         }
@@ -135,7 +129,7 @@ function AdminDashboard({ setCurrentPage }) {
     }
 
     return (
-        <div className={`admin-dashboard ${isSidebarOpen ? 'sidebar-open' : ''} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <div className={`admin-dashboard ${isSidebarOpen ? 'sidebar-open' : ''} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''} ${activeView === 'profile' ? 'cyber-glass-theme' : ''}`}>
             <Sidebar 
                 user={user}
                 menuItems={menuItems} 
@@ -148,7 +142,13 @@ function AdminDashboard({ setCurrentPage }) {
                 isSidebarCollapsed={isSidebarCollapsed}
                 setIsSidebarCollapsed={setIsSidebarCollapsed}
             />
-            <MainContent user={user} activeView={activeView} menuItems={menuItems} setIsSidebarOpen={setIsSidebarOpen}>
+            <MainContent 
+                user={user} 
+                activeView={activeView} 
+                menuItems={menuItems} 
+                setIsSidebarOpen={setIsSidebarOpen}
+                setActiveView={setActiveView}
+            >
                 {renderContent()}
             </MainContent>
             {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
@@ -185,13 +185,7 @@ const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConf
                     <li 
                         key={item.key} 
                         className={`sidebar-nav-item ${activeView === item.key ? 'active' : ''}`}
-                        onClick={() => {
-                            if (item.key === 'admin-intro') {
-                                setCurrentPage('admin');
-                            } else {
-                                setActiveView(item.key);
-                            }
-                        }}
+                        onClick={() => setActiveView(item.key)}
                         title={item.label}
                     >
                         <span className="icon">{item.icon}</span>
@@ -214,23 +208,28 @@ const Sidebar = ({ user, menuItems, activeView, setActiveView, setShowLogoutConf
 };
 
 // Main Content Area Component
-const MainContent = ({ user, activeView, children, menuItems, setIsSidebarOpen }) => {
+const MainContent = ({ user, activeView, children, menuItems, setIsSidebarOpen, setActiveView }) => {
     const activeItem = menuItems.find(item => item.key === activeView);
     const pageTitle = activeItem ? activeItem.label : 'Dashboard';
     
     return (
         <main className="dashboard-main">
             <header className="dashboard-header">
-                <button className="sidebar-open-btn" onClick={() => setIsSidebarOpen(true)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
-                <h1>{pageTitle}</h1>
+                <div className="header-left">
+                    <button className="sidebar-open-btn" onClick={() => setIsSidebarOpen(true)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <h1>{pageTitle}</h1>
+                    {activeView === 'admin-intro' && (
+                        <button className="btn-to-dashboard" onClick={() => setActiveView('dashboard')}>
+                            Trở về Dashboard
+                        </button>
+                    )}
+                </div>
                 <div className="header-actions">
                     <div className="header-search">
                         <input type="text" placeholder="Search..." />
-                    </div>
-                    <div className="header-profile">
-                        <img src={user?.avatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + user?.name} alt="profile" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </div>
                 </div>
             </header>

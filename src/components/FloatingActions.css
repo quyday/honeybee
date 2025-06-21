@@ -76,6 +76,13 @@
 }
 
 .fab-action:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transform: scale(1.1);
+    background: #f5af1a;
+    color: white;
+}
+
+@media (min-width: 769px) {
+    .fab-music {
+        display: none;
+    }
 } 

@@ -163,7 +163,7 @@ export function ChangePasswordTab() {
   };
 
   return (
-    <form className="profile-form" onSubmit={handleSubmit} style={{maxWidth: '500px', margin: '20px auto'}}>
+    <form className="security-form" onSubmit={handleSubmit}>
       <PasswordInput value={oldPass} onChange={e => setOldPass(e.target.value)} placeholder="Mật khẩu cũ" />
       <PasswordInput value={newPass} onChange={e => setNewPass(e.target.value)} placeholder="Mật khẩu mới" />
       <PasswordInput value={confirmPass} onChange={e => setConfirmPass(e.target.value)} placeholder="Nhập lại mật khẩu mới" />
@@ -175,44 +175,134 @@ export function ChangePasswordTab() {
 
 export function ProfileInfo() {
   const { user, updateUser } = useAuth();
-  const [profile, setProfile] = useState(user);
-  const [editMode, setEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(user);
+  const [activeTab, setActiveTab] = useState('account');
 
   useEffect(() => {
-    setProfile(user);
+    setFormData(user);
   }, [user]);
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    updateUser(profile);
-    setEditMode(false);
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setFormData({ ...formData, avatar: fileReader.result });
+      };
+      fileReader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleSave = () => {
+    updateUser(formData);
+    setIsEditing(false);
+    // Add toast notification for success here in a real app
+  };
+
+  const handleCancel = () => {
+    setFormData(user);
+    setIsEditing(false);
   };
   
-  if (!profile) return null;
+  if (!formData) return null;
+
+  const AccountInfo = () => (
+    <div className="admin-profile-card">
+        <div className="admin-profile-card-header">
+        <h3>Thông tin cá nhân</h3>
+        {!isEditing ? (
+            <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Chỉnh sửa
+            </button>
+        ) : (
+            <div className="action-buttons">
+            <button className="btn btn-secondary" onClick={handleCancel}>Hủy</button>
+            <button className="btn btn-success" onClick={handleSave}>Lưu</button>
+            </div>
+        )}
+        </div>
+        <div className="admin-profile-card-body">
+        <div className="form-row">
+            <div className="form-group">
+            <label>Họ và Tên</label>
+            <input type="text" name="name" value={formData.name} onChange={handleInputChange} disabled={!isEditing} />
+            </div>
+            <div className="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value={formData.email} disabled />
+            <small>Email không thể thay đổi.</small>
+            </div>
+        </div>
+        <div className="form-group">
+            <label>Số điện thoại</label>
+            <input type="tel" name="phone" value={formData.phone || ''} onChange={handleInputChange} disabled={!isEditing} />
+        </div>
+        <div className="form-group">
+            <label>Giới thiệu ngắn</label>
+            <textarea name="bio" rows="3" value={formData.bio || 'Quản trị viên hệ thống Mật Ong Kimi.'} onChange={handleInputChange} disabled={!isEditing}></textarea>
+        </div>
+        </div>
+    </div>
+  );
 
   return (
-    <form className="profile-form" onSubmit={handleSave} style={{maxWidth: '500px', margin: '20px auto'}}>
-      <div className="form-group">
-        <label>Họ tên</label>
-        <input className="form-control" value={profile.name} disabled={!editMode} onChange={e => setProfile({ ...profile, name: e.target.value })} />
+    <div className="admin-profile-page-container">
+      {/* Left Column */}
+      <div className="admin-profile-sidebar">
+        <div className="admin-profile-avatar-card">
+          <div className="avatar-wrapper">
+            <img src={formData.avatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + formData.name} alt="Avatar" />
+            <label htmlFor="avatar-upload" className="avatar-edit-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9.002a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-9.002a2 2 0 0 0-2 2v2.5M12 10l-4 4 4 4"/><path d="m16 14-4-4 4-4"/><path d="M3.5 16H8"/></svg>
+            </label>
+            <input id="avatar-upload" type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }}/>
+          </div>
+          <h3>{formData.name}</h3>
+          <p>{formData.role}</p>
+        </div>
+        <div className="admin-profile-meta-card">
+            <h4>Thông tin bổ sung</h4>
+            <ul>
+                <li>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Ngày tham gia:</span>
+                    <span>{user.joinDate || '01/01/2024'}</span>
+                </li>
+                <li>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10.5h.5a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1.063M3 16.5v-2a2 2 0 0 1 2-2h.5"/><path d="M22 12.5a6.522 6.522 0 0 0-7.38-6.445 6.522 6.522 0 0 0-11.2 5.378A6.522 6.522 0 0 0 8 20.932"/></svg> Lần đăng nhập cuối:</span>
+                    <span>Vừa xong</span>
+                </li>
+            </ul>
+        </div>
       </div>
-      <div className="form-group">
-        <label>Email</label>
-        <input className="form-control" value={profile.email} disabled />
+
+      {/* Right Column */}
+      <div className="admin-profile-main-content">
+        <div className="admin-profile-tabs">
+            <button className={`tab-button ${activeTab === 'account' ? 'active' : ''}`} onClick={() => setActiveTab('account')}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                Tài khoản
+            </button>
+             <button className={`tab-button ${activeTab === 'password' ? 'active' : ''}`} onClick={() => setActiveTab('password')}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Bảo mật
+            </button>
+        </div>
+
+        <div className="admin-profile-tab-content">
+            {activeTab === 'account' && <AccountInfo />}
+            {activeTab === 'password' && (
+                <div className="admin-profile-card">
+                    <div className="admin-profile-card-header"><h3>Đổi mật khẩu</h3></div>
+                    <div className="admin-profile-card-body"><ChangePasswordTab /></div>
+                </div>
+            )}
+        </div>
       </div>
-      <div className="form-group">
-        <label>Số điện thoại</label>
-        <input className="form-control" value={profile.phone || ''} disabled={!editMode} onChange={e => setProfile({ ...profile, phone: e.target.value })} />
-      </div>
-      
-      {!editMode ? (
-        <button type="button" className="btn btn-primary" onClick={() => setEditMode(true)}>Chỉnh sửa</button>
-      ) : (
-        <>
-          <button type="submit" className="btn btn-success">Lưu thay đổi</button>
-          <button type="button" className="btn" onClick={() => {setEditMode(false); setProfile(user);}} style={{marginLeft: '10px'}}>Hủy</button>
-        </>
-      )}
-    </form>
+    </div>
   );
 } 

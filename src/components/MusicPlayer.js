@@ -1,7 +1,43 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react';
 import './MusicPlayer.css';
 
+function MarqueeText({ text, className }) {
+    const wrapperRef = useRef(null);
+    const textRef = useRef(null);
+    const [isScrolling, setIsScrolling] = useState(false);
+
+    useLayoutEffect(() => {
+        const checkOverflow = () => {
+            const wrapper = wrapperRef.current;
+            const textEl = textRef.current;
+            if (wrapper && textEl) {
+                const isOverflowing = textEl.getBoundingClientRect().height > wrapper.getBoundingClientRect().height;
+                if (isScrolling !== isOverflowing) {
+                    setIsScrolling(isOverflowing);
+                }
+            }
+        };
+
+        checkOverflow();
+        const resizeObserver = new ResizeObserver(checkOverflow);
+        if (wrapperRef.current) {
+            resizeObserver.observe(wrapperRef.current);
+        }
+        
+        return () => resizeObserver.disconnect();
+    }, [text, isScrolling]);
+
+    return (
+        <div ref={wrapperRef} className={`${className} marquee-wrapper`}>
+            <span ref={textRef} className={isScrolling ? 'scrolling-text' : 'static-text'}>
+                {text}
+            </span>
+        </div>
+    );
+}
+
 function MusicPlayer() {
+    // --- STATE MANAGEMENT ---
     const [songs, setSongs] = useState([]);
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -25,11 +61,23 @@ function MusicPlayer() {
                 src: '/music/trucxinh.mp3',
                 cover: '/meme/meme1.jpg'
             },
+             {
+                title: 'Mashup Track 06',
+                artist: 'Quý Lowkey',
+                src: '/music/track06.mp3',
+                cover: '/meme/meme12.jpg'
+            },
             {
                 title: 'Mở lối cho em',
                 artist: 'Quý Lowkey',
                 src: '/music/moloi.mp3',
                 cover: '/meme/meme.jpg'
+            },
+             {
+                title: 'Thương Một Người Mất Cả Tương Lai',
+                artist: 'Quý Lowkey',
+                src: '/music/thuongmotnguoi.mp3',
+                cover: '/meme/meme13.jpg'
             },
             {
                 title: 'Thương Một Người Không Thương',
@@ -65,7 +113,7 @@ function MusicPlayer() {
                 title: 'Về bên anh',
                 artist: 'Quý Lowkey',
                 src: '/music/vebenhanh.mp3',
-                cover: '/meme/meme9.jpg'
+                cover: '/meme/meme14.jpg'
             },
             {
                 title: 'Tìm em',
@@ -84,6 +132,12 @@ function MusicPlayer() {
                 artist: 'Quý Lowkey',
                 src: '/music/muaroivaophong.mp3',
                 cover: '/meme/meme7.jpg'
+            },
+            {
+                title: 'chiếc khăn gió ấm',
+                artist: 'Quý Lowkey',
+                src: '/music/chieckhangioam.mp3',
+                cover: '/meme/meme9.jpg'
             },
             {
                 title: 'Hết Thương Cạn Nhớ',
@@ -215,9 +269,11 @@ function MusicPlayer() {
                      </svg>
                 </button>
                 <img src={currentSong.cover} alt={currentSong.title} className={`album-cover ${isPlaying ? 'playing' : ''}`} />
-                <div className="song-info-vertical">
-                    <p className="title">{currentSong.title}</p>
-                    <p className="artist">{currentSong.artist}</p>
+                <div className="song-info-vertical">    
+                    <MarqueeText text={currentSong.title} className="title" />
+                </div>
+                <div className="song-info-vertical-artist">
+                     <p className="artist">{currentSong.artist}</p>
                 </div>
                 <div className="main-controls">
                     <button onClick={handlePrev} className="control-button">

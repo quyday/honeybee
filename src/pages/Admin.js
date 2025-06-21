@@ -1,154 +1,75 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import './AdminIntro.css';
 
-const fadeInAnim = {
-  animation: 'fadeInAdmin 0.8s ease',
-};
-const cardStyle = {
-  background: 'rgba(255,255,255,0.95)',
-  borderRadius: 24,
-  boxShadow: '0 8px 32px rgba(245,175,26,0.15)',
-  padding: 36,
-  maxWidth: 700,
-  margin: '0 auto',
-  position: 'relative',
-  ...fadeInAnim,
-};
-const bgStyle = {
-  minHeight: '100vh',
-  background: ' url(https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80) center/cover no-repeat fixed',
-  fontFamily: 'Quicksand, Nunito, Arial, sans-serif',
-  padding: '48px',
-};
-const headerStyle = {
-  fontFamily: 'monospace',
-  fontSize: 32,
-  fontWeight: 800,
-  color: 'rgb(64 57 51)',
-  letterSpacing: 1,
-  textAlign: 'center',
-  marginBottom: 32,
-  textShadow: 'rgb(245 175 26 / 55%) 0 2px 8px',
-};
-const hiStyle = {
-  fontSize: 20,
-  color: '#f5af1a',
-  fontWeight: 600,
-  marginBottom: 18,
-};
-const ulStyle = {
-  fontSize: 18,
-  marginTop: 24,
-  color: '#b8860b',
-  listStyle: 'none',
-  padding: 0,
-};
-const liStyle = {
-  marginBottom: 14,
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-  fontWeight: 500,
-  background: 'rgba(255,251,231,0.7)',
-  borderRadius: 12,
-  padding: '10px 18px',
-  boxShadow: '0 1px 4px #ffe08255',
-  transition: 'transform 0.2s, box-shadow 0.2s',
-};
-const iconStyle = {
-  fontSize: 22,
-  color: '#f5af1a',
-  minWidth: 28,
-  textAlign: 'center',
-};
-const logoutBtn = {
-  background: 'linear-gradient(90deg, #f55 0%, #ffb347 100%)',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 8,
-  padding: '10px 28px',
-  fontWeight: 'bold',
-  fontSize: 18,
-  boxShadow: '0 2px 8px #f55a',
-  cursor: 'pointer',
-  marginLeft: 18,
-  transition: 'background 0.2s, transform 0.2s',
-};
-const homeBtn = {
-  marginTop: 32,
-  background: 'linear-gradient(90deg, #48c6ef 0%, #6c63ff 100%)',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 8,
-  padding: '10px 28px',
-  fontWeight: 'bold',
-  fontSize: 18,
-  boxShadow: '0 2px 8px #6c63ff33',
-  cursor: 'pointer',
-  transition: 'background 0.2s, transform 0.2s',
-};
-
-// Animation keyframes
-const styleSheet = document.createElement('style');
-styleSheet.innerHTML = `
-@keyframes fadeInAdmin {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-button.admin-logout:hover {
-  background: linear-gradient(90deg, #ffb347 0%, #f55 100%);
-  transform: scale(1.06);
-}
-button.admin-home:hover {
-  background: linear-gradient(90deg, #6c63ff 0%, #48c6ef 100%);
-  transform: scale(1.06);
-}
-li.admin-li:hover {
-  transform: translateX(8px) scale(1.03);
-  box-shadow: 0 4px 16px #ffe08299;
-}
-`;
-document.head.appendChild(styleSheet);
-
-function Admin({ setCurrentPage }) {
-  const { logout, user } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    setCurrentPage('login');
-  };
-
-  const features = [
-    { icon: '🛒', label: 'Quản lý sản phẩm', desc: 'Thêm, sửa, xóa, ẩn/hiện, quản lý danh mục' },
-    { icon: '📦', label: 'Quản lý đơn hàng', desc: 'Xem, lọc, cập nhật trạng thái, xem chi tiết, in hóa đơn' },
-    { icon: '👥', label: 'Quản lý người dùng', desc: 'Xem danh sách, chi tiết, khóa/mở, xóa user' },
-    { icon: '📰', label: 'Quản lý nội dung trang', desc: 'Banner, tin tức, khuyến mãi, giới thiệu, liên hệ' },
-    { icon: '🎫', label: 'Quản lý mã giảm giá', desc: 'Tạo, cập nhật, xóa mã giảm giá' },
-    { icon: '📊', label: 'Thống kê & báo cáo', desc: 'Đơn hàng, doanh thu, sản phẩm bán chạy, user đăng ký' },
-    { icon: '⚙️', label: 'Cài đặt hệ thống', desc: 'Thông tin cửa hàng, thanh toán, phí vận chuyển' },
-    { icon: '💬', label: 'Quản lý liên hệ & phản hồi', desc: 'Xem, trả lời, quản lý hỗ trợ/đánh giá, gửi thông báo' },
-  ];
-
-  return (
-    <div style={bgStyle}>
-      <div style={cardStyle}>
-        <div style={headerStyle}>QUẢN TRỊ HỆ THỐNG <span style={{fontSize:20, fontWeight:600, color:'#f5af1a'}}>(ADMIN DASHBOARD)</span></div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-          <span style={hiStyle}>Xin chào, <b>{user?.name}</b></span>
-          <button className="admin-logout" onClick={handleLogout} style={logoutBtn}>Đăng xuất</button>
+const StatCard = ({ icon, value, label, color }) => (
+    <div className="stat-card" style={{ '--card-color': color }}>
+        <div className="stat-icon">{icon}</div>
+        <div className="stat-info">
+            <span className="stat-value">{value}</span>
+            <span className="stat-label">{label}</span>
         </div>
-        <ul style={ulStyle}>
-          {features.map(f => (
-            <li key={f.label} className="admin-li" style={liStyle}>
-              <span style={iconStyle}>{f.icon}</span>
-              <span><b>{f.label}</b>: {f.desc}</span>
-            </li>
-          ))}
-        </ul>
-        <button className="admin-home" style={homeBtn} onClick={() => setCurrentPage('profile')}>Về trang Dashboard</button>
-      </div>
     </div>
-  );
+);
+
+const FeatureCard = ({ icon, title, description }) => (
+    <div className="feature-card-reloaded">
+        <div className="feature-icon-reloaded">{icon}</div>
+        <div className="feature-info-reloaded">
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
+        <div className="feature-arrow">→</div>
+    </div>
+);
+
+const ICONS = {
+    products: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>,
+    orders: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4A2 2 0 0 1 2 16.76V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2.32 6.16 12 11 21.68 6.16"></polyline><line x1="12" y1="22.76" x2="12" y2="11"></line></svg>,
+    users: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>,
+    content: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>,
+    discounts: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>,
+    analytics: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>,
+    settings: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>,
+    feedback: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+};
+
+function Admin({ user, summary }) {
+    const formatCurrency = (value) => value ? `${Math.round(value).toLocaleString('vi-VN')} vnđ` : '0 vnđ';
+
+    const features = [
+        { icon: ICONS.products, title: 'Quản lý sản phẩm', description: 'Thêm, sửa, xóa, ẩn/hiện, quản lý danh mục' },
+        { icon: ICONS.orders, title: 'Quản lý đơn hàng', description: 'Xem, lọc, cập nhật trạng thái, xem chi tiết, in hóa đơn' },
+        { icon: ICONS.users, title: 'Quản lý người dùng', description: 'Xem danh sách, chi tiết, khóa/mở, xóa user' },
+        { icon: ICONS.content, title: 'Quản lý nội dung trang', description: 'Banner, tin tức, khuyến mãi, giới thiệu, liên hệ' },
+        { icon: ICONS.discounts, title: 'Quản lý mã giảm giá', description: 'Tạo, cập nhật, xóa mã giảm giá' },
+        { icon: ICONS.analytics, title: 'Thống kê & báo cáo', description: 'Đơn hàng, doanh thu, sản phẩm bán chạy, user đăng ký' },
+        { icon: ICONS.settings, title: 'Cài đặt hệ thống', description: 'Thông tin cửa hàng, thanh toán, phí vận chuyển' },
+        { icon: ICONS.feedback, title: 'Quản lý liên hệ & phản hồi', description: 'Xem, trả lời, quản lý hỗ trợ/đánh giá, gửi thông báo' },
+    ];
+
+    const stats = [
+        { icon: '💰', value: formatCurrency(summary?.totalRevenue), label: 'Tổng doanh thu', color: '#27ae60' },
+        { icon: '📦', value: summary?.totalOrders || 0, label: 'Tổng đơn hàng', color: '#2980b9' },
+        { icon: '👥', value: summary?.totalUsers || 0, label: 'Tổng người dùng', color: '#8e44ad' },
+        { icon: '📈', value: formatCurrency(summary?.avgOrderValue), label: 'Giá trị TB', color: '#f39c12' },
+    ];
+
+    return (
+        <div className="admin-intro-reloaded">
+            <div className="admin-intro-header-reloaded">
+                <h1>Chào mừng trở lại, {user?.name || 'Admin'}!</h1>
+                <p>Đây là trung tâm điều hành của bạn. Mọi thứ bạn cần đều ở đây.</p>
+            </div>
+
+            <div className="stats-container">
+                {stats.map(stat => <StatCard key={stat.label} {...stat} />)}
+            </div>
+
+            <div className="features-grid-reloaded">
+                {features.map(feature => <FeatureCard key={feature.title} {...feature} />)}
+            </div>
+        </div>
+    );
 }
 
 export default Admin; 

@@ -233,19 +233,19 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/frame-7-1.png?v=1669696727853" alt="Mật ong rừng Hoa Yên Bạch Honimore" className="lazyload img-responsive center-block loaded" data-was-processed="true" />
 										</a>
 										<div className="action-cart">
-											<input className="hidden" type="hidden" name="variantId" value="76944878" />
+												<input className="hidden" type="hidden" name="variantId" value="76944878" />
 											<button className="btn btn-cart btn-left btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='combo-mat-ong-rung-hoa-yen-bach-honimore.html'}>
-												Tùy chọn
-											</button>
+													Tùy chọn
+												</button>
+											</div>
 										</div>
-									</div>
 									<div className="info-product">
 										<h3 className="product-name"><a href="combo-mat-ong-rung-hoa-yen-bach-honimore.html" title="Mật ong rừng Hoa Yên Bạch Honimore">Mật ong rừng Hoa Yên Bạch Honimore</a></h3>
 										<div className="price-box">500.000₫</div>
-									</div>
-								</form>
+										</div>
+									</form>
+								</div>
 							</div>
-						</div>
 						<div className="item">
 							<div className="item_product_main">
 								<form action="/cart/add" method="post" className="variants product-action wishItem" encType="multipart/form-data">
@@ -254,23 +254,23 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/frame-8.png?v=1669697248883" alt="Mật ong rừng cao thảo dược Honimore Lady" className="lazyload img-responsive center-block loaded" data-was-processed="true" />
 										</a>
 										<div className="action-cart">
-											<input className="hidden" type="hidden" name="variantId" value="76945705" />
+												<input className="hidden" type="hidden" name="variantId" value="76945705" />
 											<button className="btn btn-cart btn-left btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='mat-ong-rung.html-cao-thao-duoc-honimore-lady'}>
-												Tùy chọn
-											</button>
+													Tùy chọn
+												</button>
+											</div>
 										</div>
-									</div>
 									<div className="info-product">
 										<h3 className="product-name"><a href="mat-ong-rung.html-cao-thao-duoc-honimore-lady" title="Mật ong rừng cao thảo dược Honimore Lady">Mật ong rừng cao thảo dược Honimore Lady</a></h3>
 										<div className="price-box">
 											<span className="discount">-40%</span>
-											<span className="price">300.000₫</span>
-											<span className="compare-price">500.000₫</span>
+												<span className="price">300.000₫</span>
+												<span className="compare-price">500.000₫</span>
+											</div>
 										</div>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
-						</div>
 						<div className="item">
 							<div className="item_product_main">
 								<form action="/cart/add" method="post" className="variants product-action wishItem" encType="multipart/form-data">
@@ -279,23 +279,23 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/16.png?v=1669708547967" alt="Mật ong rừng Hoa Cao Nguyên" className="lazyload img-responsive loaded" data-was-processed="true" />
 										</a>
 										<div className="action-cart">
-											<input className="hidden" type="hidden" name="variantId" value="76947736" />
+												<input className="hidden" type="hidden" name="variantId" value="76947736" />
 											<button className="btn btn-cart btn-left btn-views left-to option-choice" title="Tùy chọn" type="button" onClick={() => window.location.href='mat-ong-rung-hoa-cao-nguyen.html'}>
-												Tùy chọn
-											</button>
+													Tùy chọn
+												</button>
+											</div>
 										</div>
-									</div>
 									<div className="info-product">
-										<h3 className="product-name"><a href="mat-ong-rung-hoa-cao-nguyen.html" title="Mật ong rừng Hoa Cao Nguyên">Mật ong rừng Hoa Cao Nguyên</a></h3>
+											<h3 className="product-name"><a href="mat-ong-rung-hoa-cao-nguyen.html" title="Mật ong rừng Hoa Cao Nguyên">Mật ong rừng Hoa Cao Nguyên</a></h3>
 										<div className="price-box">
 											<span className="discount">-23%</span>
-											<span className="price">230.000₫</span>
-											<span className="compare-price">300.000₫</span>
+												<span className="price">230.000₫</span>
+												<span className="compare-price">300.000₫</span>
+											</div>
 										</div>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
-						</div>
 						<div className="item">
 							<div className="item_product_main">
 								<form action="/cart/add" method="post" className="variants product-action wishItem" encType="multipart/form-data">
@@ -304,7 +304,7 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 											<img width="199" height="199" src="https://bizweb.dktcdn.net/100/472/304/products/17.png?v=1669708779423" alt="Mật ong rừng Hoa Rừng Phương Nam" className="lazyload img-responsive center-block loaded" data-was-processed="true" />
 										</a>
 										<div className="action-cart">
-											<input type="hidden" name="variantId" value="76947769" />
+												<input type="hidden" name="variantId" value="76947769" />
 											<button className="btn-buy btn-left btn-views add_to_cart " title="Mua ngay">Mua ngay</button>
 										</div>
 									</div>
@@ -312,13 +312,13 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 										<h3 className="product-name"><a href="mat-ong-rung.html-hoa-rung-phuong-nam.html" title="Mật ong rừng Hoa Rừng Phương Nam">Mật ong rừng Hoa Rừng Phương Nam</a></h3>
 										<div className="price-box">
 											<span className="discount">-50%</span>
-											<span className="price">200.000₫</span>
-											<span className="compare-price">400.000₫</span>
+												<span className="price">200.000₫</span>
+												<span className="compare-price">400.000₫</span>
+											</div>
 										</div>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
-						</div>
 						
 					</div>
 					<div className="button_readmore">
@@ -391,10 +391,10 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 							<div className="blog_item clearfix">
 								<div className="blogwp">
 									<div className="blog-thumbnail">
-										<a className="thumb" href="mat-ong-rung-va-mat-ong-nuoi-loai-nao-tot-hon.html" title="Mật ong rừng và mật ong nuôi loại nào tốt hơn?">
+											<a className="thumb" href="mat-ong-rung-va-mat-ong-nuoi-loai-nao-tot-hon.html" title="Mật ong rừng và mật ong nuôi loại nào tốt hơn?">
 											<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-7.jpg?v=1669711748507" alt="Mật ong rừng và mật ong nuôi loại nào tốt hơn?" className="lazyload img-responsive loaded" data-was-processed="true" />
-										</a>
-									</div>
+											</a>
+										</div>
 									<div className="content_blog clearfix">
 										<span className="post-time">Thứ Ba, 29/11/2022</span>
 										<h3><a onClick={() => onNewsClick('honey-comparison')} title="Mật ong rừng và mật ong nuôi loại nào tốt hơn?" className="a-title">Mật ong rừng và mật ong nuôi loại nào tốt hơn?</a></h3>
@@ -411,10 +411,10 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 							<div className="blog_item clearfix">
 								<div className="blogwp">
 									<div className="blog-thumbnail">
-										<a className="thumb" href="tac-dung-cua-mat-ong-chin-doi-voi-suc-khoe.html" title="Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe">
+											<a className="thumb" href="tac-dung-cua-mat-ong-chin-doi-voi-suc-khoe.html" title="Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe">
 											<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-12.jpg?v=1669711557603" alt="Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe" className="lazyload img-responsive loaded" data-was-processed="true" />
-										</a>
-									</div>
+											</a>
+										</div>
 									<div className="content_blog clearfix">
 										<span className="post-time">Thứ Ba, 29/11/2022</span>
 										<h3><a onClick={() => onNewsClick('honey-benefit')} title="Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe" className="a-title">Tác dụng đến ko ngờ của mật ong chín đối với sức khỏe</a></h3>
@@ -431,10 +431,10 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 							<div className="blog_item clearfix">
 								<div className="blogwp">
 									<div className="blog-thumbnail">
-										<a className="thumb" href="cong-dung-va-huong-dan-dung-mat-ong-dung-cach.html" title="Công dụng và hướng dẫn dùng mật ong đúng cách">
+											<a className="thumb" href="cong-dung-va-huong-dan-dung-mat-ong-dung-cach.html" title="Công dụng và hướng dẫn dùng mật ong đúng cách">
 											<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper.jpg?v=1669709493977" alt="Công dụng và hướng dẫn dùng mật ong đúng cách" className="lazyload img-responsive loaded" data-was-processed="true" />
-										</a>
-									</div>
+											</a>
+										</div>
 									<div className="content_blog clearfix">
 										<span className="post-time">29/11/2022</span>
 										<h3><a onClick={() => onNewsClick('honey-guide')} title="Công dụng và hướng dẫn dùng mật ong đúng cách" className="a-title">Công dụng và hướng dẫn dùng mật ong đúng cách</a></h3>
@@ -451,10 +451,10 @@ function Home({ onViewMoreProducts, setCurrentPage, setSelectedNews, onNewsClick
 							<div className="blog_item clearfix">
 								<div className="blogwp">
 									<div className="blog-thumbnail">
-										<a className="thumb" href="nhung-ai-nen-dung-mat-ong-thuong-xuyen.html" title="Những ai thì nên dùng mật ong thường xuyên?">
+											<a className="thumb" href="nhung-ai-nen-dung-mat-ong-thuong-xuyen.html" title="Những ai thì nên dùng mật ong thường xuyên?">
 											<img src="https://bizweb.dktcdn.net/100/472/304/articles/wallpaperflare-com-wallpaper-13.jpg?v=1669712533677" alt="Những ai thì nên dùng mật ong thường xuyên?" className="lazyload img-responsive loaded" data-was-processed="true" />
-										</a>
-									</div>
+											</a>
+										</div>
 									<div className="content_blog clearfix">
 										<span className="post-time">29/11/2022</span>
 										<h3><a onClick={() => onNewsClick('honey-who')} title="Những ai thì nên dùng mật ong thường xuyên?" className="a-title">Những ai thì nên dùng mật ong thường xuyên?</a></h3>

@@ -42,7 +42,15 @@ function Cart({ setCurrentPage }) {
                 </thead>
                 <tbody>
                   {cartItems.length === 0 ? (
-                    <tr><td colSpan={6} className="cart-table__empty">Giỏ hàng trống</td></tr>
+                    <tr>
+                      <td colSpan={6}>
+                        <div className="empty-cart-container">
+                           <img src="/images/empty-cart.png" alt="Giỏ hàng trống" />
+                           <p>Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
+                           <button className="btn btn-warning" onClick={() => setCurrentPage('products')}>Khám phá sản phẩm</button>
+                        </div>
+                      </td>
+                    </tr>
                   ) : (
                     cartItems.map(item => (
                       <tr key={item.id} className="cart-table__row">
@@ -75,7 +83,11 @@ function Cart({ setCurrentPage }) {
             {/* Mobile list */}
             <div className="cart-mobile-page d-block d-xl-none">
               {cartItems.length === 0 ? (
-                <div style={{textAlign: 'center', padding: 24}}>Giỏ hàng trống</div>
+                <div className="empty-cart-container">
+                    <img src="/images/empty-cart.png" alt="Giỏ hàng trống" />
+                    <p>Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
+                    <button className="btn btn-warning" onClick={() => setCurrentPage('products')}>Khám phá sản phẩm</button>
+                </div>
               ) : (
                 <div style={{padding: 8}}>
                   {cartItems.map(item => (

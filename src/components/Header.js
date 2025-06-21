@@ -237,7 +237,7 @@ function Header({ setCurrentPage }) {
               <div className="logo_center">
                 <div className="logo">
                   <a href="/" className="logo-wrapper">
-                    <img src="//bizweb.dktcdn.net/100/472/304/themes/887048/assets/logo.png?1729245409661" alt="logo Template Honey Bee" />
+                    <img style={{width: '100px'}} src="/logo/logo-honey.png" alt="logo Quý Honey Bee" />
                   </a>
                 </div>
               </div>

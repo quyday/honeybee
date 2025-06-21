@@ -213,3 +213,11 @@ border: 2px #87b8c9 solid;
   font-weight: 100;
     font-size: 14px;
 } */
+
+/* Constrain logo size to prevent overflow */
+.logo img {
+  max-height: 70px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}

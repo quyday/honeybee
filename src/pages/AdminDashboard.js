@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
 import { useAuth } from '../context/AuthContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, BarChart, Bar } from 'recharts';
-import { OrderHistoryTable, UserManagement, ChangePasswordTab, ProfileInfo } from './Profile'; // Re-use components
+import { OrderHistoryTable, UserManagement, ChangePasswordTab, ProfileInfo } from './AdminShared';
 
 const statusMap = {
     'In Transit': 'in-transit',
@@ -59,14 +59,14 @@ function AdminDashboard({ setCurrentPage }) {
     }, []);
 
     useEffect(() => {
-        document.body.classList.add('admin-view-active');
-        if (isSidebarCollapsed) {
-            document.body.classList.add('admin-sidebar-collapsed');
-        } else {
-            document.body.classList.remove('admin-sidebar-collapsed');
-        }
+        const detail = {
+            isActive: true,
+            isCollapsed: isSidebarCollapsed,
+        };
+        window.dispatchEvent(new CustomEvent('adminLayoutChange', { detail }));
+
         return () => {
-            document.body.classList.remove('admin-view-active', 'admin-sidebar-collapsed');
+            window.dispatchEvent(new CustomEvent('adminLayoutChange', { detail: { isActive: false, isCollapsed: false } }));
         };
     }, [isSidebarCollapsed]);
 

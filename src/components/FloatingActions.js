@@ -4,11 +4,6 @@ import './FloatingActions.css';
 const FloatingActions = () => {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Gửi event để yêu cầu MusicPlayer mở/đóng playlist
-    const handleMusicClick = () => {
-        window.dispatchEvent(new CustomEvent('toggleMusicPlaylist'));
-    };
-
     // Mở link chat với admin
     const handleContactClick = () => {
         window.open('https://www.facebook.com/messages/e2ee/t/7498801963555219/', '_blank');
@@ -28,9 +23,6 @@ const FloatingActions = () => {
     return (
         <div className={`fab-container ${isOpen ? 'open' : ''}`}>
             <div className="fab-actions">
-                <div className="fab-action" onClick={handleMusicClick} title="Mở trình phát nhạc">
-                    <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10.55c-.59-.34-1.27-.55-2-.55c-2.21 0-4 1.79-4 4s1.79 4 4 4s4-1.79 4-4V7h4V3h-6Z"></path></svg>
-                </div>
                 <div className="fab-action" onClick={handleContactClick} title="Liên hệ Admin">
                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 </div>

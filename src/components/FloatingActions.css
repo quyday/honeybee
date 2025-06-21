@@ -1,5 +1,5 @@
 .fab-container {
-position: fixed;
+    position: fixed;
     bottom: 110px;
     right: 24px;
     z-index: 1000;
@@ -17,8 +17,7 @@ position: fixed;
     height: 44px;
     background: #f5af1a;
     border-radius: 50%;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);

@@ -50,7 +50,7 @@ function Footer({ setCurrentPage }) {
             <div className="col-lg-3 col-md-4 col-12">
               <div className="widget-ft">
                 <a href="/" className="blocklogo">
-                  <img src={process.env.PUBLIC_URL + "/images/logo-footer.png"} alt="Template Honey Bee" />
+                  <img style={{width: '160px', marginTop: '-27px'}} src="/logo/logo-honey.png" alt="logo Quý Lowkey" />
                 </a>
                 <div className="content_contact">
                   Nghĩa Chỉ, Minh Đạo, Tiên Du, Bắc Ninh
@@ -84,8 +84,7 @@ function Footer({ setCurrentPage }) {
                 </ul>
              
             </div>
-            <div className="col-lg-3 col-md-4 col-12 footer-click">
-              
+            <div className="col-lg-3 col-md-4 col-12 footer-click">             
                 <h4 className="title-menu clicked">
                   Chính sách mua hàng
                 </h4>
@@ -108,8 +107,7 @@ function Footer({ setCurrentPage }) {
                   <li className="li_menu">
                     <a href="/cam-nang" title="Cẩm nang">Cẩm nang</a>
                   </li>
-                </ul>
-        
+                </ul>        
             </div>
             <div className="col-lg-3 col-md-12 col-12">
               <h4 className="title-menu">
@@ -138,7 +136,6 @@ function Footer({ setCurrentPage }) {
           </div>
         </div>
       </div>
-
       <a href="#" className="backtop" title="Lên đầu trang" style={{bottom: '60px', right: '2626px'}}>
         <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="angle-up" role="img"
           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="svg-inline--fa fa-angle-up fa-w-10">

@@ -14,7 +14,11 @@ const CartSidebar = ({ setCurrentPage }) => {
       <button className="cart-sidebar__close" onClick={() => setIsCartOpen(false)}>&times;</button>
       <h2 className="cart-sidebar__title">Giỏ hàng</h2>
       {cartItems.length === 0 ? (
-        <p className="cart-sidebar__empty">Giỏ hàng trống</p>
+        <div className="empty-cart-container sidebar">
+            <img src="/images/empty-cart.png" alt="Giỏ hàng trống" />
+            <p>Bạn chưa có đơn hàng nào.</p>
+            <span>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi!</span>
+        </div>
       ) : (
         <div>
           <div className="cart-sidebar__items">

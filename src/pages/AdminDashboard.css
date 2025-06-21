@@ -491,6 +491,9 @@
     padding: 30px 40px;
     border-radius: 12px;
     animation: slideUp 0.4s ease;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes slideUp {

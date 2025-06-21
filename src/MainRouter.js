@@ -8,7 +8,7 @@ import Cart from './pages/Cart';
 import Introduct from './pages/Introduct';
 import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
-import Profile from './pages/Profile';
+import ProfilePage from './pages/ProfilePage';
 import { useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import CartHeader from './components/CartHeader';
@@ -76,7 +76,7 @@ function MainRouter() {
       case 'news-detail':
         return <NewsDetail setCurrentPage={setCurrentPage} news={selectedNews} />;
       case 'profile':
-        return user ? <Profile setCurrentPage={setCurrentPage} /> : <Login setCurrentPage={setCurrentPage} />;
+        return user ? <ProfilePage setCurrentPage={setCurrentPage} /> : <Login setCurrentPage={setCurrentPage} />;
       case 'admin':
         return user && user.role === 'admin' ? <Admin setCurrentPage={setCurrentPage} /> : <Login setCurrentPage={setCurrentPage} />;
       case 'checkout':

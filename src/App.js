@@ -17,7 +17,7 @@ function App() {
   const [fallingGift, setFallingGift] = useState(null);
   const [giftImgError, setGiftImgError] = useState(false);
   const [umbrellaImgError, setUmbrellaImgError] = useState(false);
-  const [autoGift, setAutoGift] = useState(() => localStorage.getItem('autoGiftOff') !== 'true');
+  const [autoGift, setAutoGift] = useState(() => true);
   const randomGiftInterval = useRef();
 
   // Lắng nghe voucher admin phát và autoGiftOff
@@ -64,7 +64,13 @@ function App() {
         });
       } catch {}
     }
-    setAutoGift(localStorage.getItem('autoGiftOff') !== 'true');
+    // CHỈ set autoGiftOff = 'true' nếu chưa từng có key này (lần đầu tiên truy cập)
+    if (localStorage.getItem('autoGiftOff') === null) {
+      localStorage.setItem('autoGiftOff', 'true');
+      setAutoGift(false);
+    } else {
+      setAutoGift(localStorage.getItem('autoGiftOff') !== 'true');
+    }
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 

@@ -178,6 +178,58 @@ const MyProfileInfo = () => {
   );
 };
 
+const MyVouchers = () => {
+  const [vouchers, setVouchers] = useState([]);
+  const [copiedCode, setCopiedCode] = useState('');
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(''), 1200);
+  };
+  useEffect(() => {
+    const loadVouchers = () => {
+      const all = JSON.parse(localStorage.getItem('vouchers') || '[]');
+      setVouchers(all);
+    };
+    loadVouchers();
+    window.addEventListener('storage', loadVouchers);
+    return () => window.removeEventListener('storage', loadVouchers);
+  }, []);
+  if (!vouchers.length) return (
+    <div className="profile-content-placeholder animate-fade-in">
+      <img src="/images/giftbox.png" alt="Chưa có voucher" style={{maxWidth: 90, opacity: 0.7}} />
+      <p>Bạn chưa có voucher nào.</p>
+      <p>Hãy săn hộp quà hoặc nhận từ admin để được giảm giá!</p>
+    </div>
+  );
+  return (
+    <div className="order-history-list animate-fade-in" style={{gap: 12}}>
+      {vouchers.map((v, idx) => (
+        <div key={v.code + idx} className="order-card animate-fade-in" style={{ animationDelay: `${idx * 0.07}s`, borderLeft: v.type === 'freeship' ? '6px solid #43a047' : v.type === 'percent' ? '6px solid #e65100' : '6px solid #0288d1' }}>
+          <div className="order-card-header" style={{background:'#f7fafd', display:'flex', alignItems:'center', gap:8}}>
+            <span style={{fontWeight:700, color:'#c58940', fontSize:16, display:'flex', alignItems:'center', gap:6}}>
+              Voucher: {v.code}
+              <span style={{ cursor: 'pointer', fontSize: 18 }} title="Sao chép mã" onClick={() => handleCopy(v.code)}>📋</span>
+              {copiedCode === v.code && <span style={{ color: '#43a047', fontSize: 13, marginLeft: 4 }}>Đã sao chép!</span>}
+            </span>
+            <span style={{fontWeight:600, color: v.status === 'active' ? '#43a047' : '#bdbdbd'}}>{v.status === 'active' ? 'Còn hạn' : 'Hết hạn'}</span>
+          </div>
+          <div className="order-card-body" style={{gap:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:12}}>
+              <span style={{fontWeight:600, color: v.type === 'freeship' ? '#43a047' : v.type === 'percent' ? '#e65100' : '#0288d1'}}>
+                {v.type === 'freeship' ? 'Freeship' : v.type === 'percent' ? 'Giảm %' : 'Giảm tiền'}
+              </span>
+              <span style={{fontWeight:700, fontSize:17}}>
+                {v.type === 'percent' ? v.value + '%' : v.type === 'freeship' ? 'Freeship' : Number(v.value).toLocaleString('vi-VN') + ' vnđ'}
+              </span>
+            </div>
+            <div style={{fontSize:14, color:'#888'}}>Hạn dùng: {v.expiry || 'Không giới hạn'}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const ProfileCard = ({ user, onLogout, onAvatarChange }) => {
     const fileInputRef = useRef(null);
@@ -259,6 +311,7 @@ function ProfilePage({ setCurrentPage }) {
   const menuItems = [
     { key: 'profile', label: 'Tài khoản của tôi', icon: '👤' },
     { key: 'orders', label: 'Lịch sử mua hàng', icon: '📦' },
+    { key: 'vouchers', label: 'Voucher của tôi', icon: '🎁' },
     { key: 'changepass', label: 'Đổi mật khẩu', icon: '🔑' },
   ];
 
@@ -288,6 +341,7 @@ function ProfilePage({ setCurrentPage }) {
           <div className="profile-content-area">
             {activeTab === 'profile' && <MyProfileInfo />}
             {activeTab === 'orders' && <OrderHistory />}
+            {activeTab === 'vouchers' && <MyVouchers />}
             {activeTab === 'changepass' && <ChangePassword />}
           </div>
         </main>

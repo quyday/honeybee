@@ -112,7 +112,7 @@ function MusicPlayer() {
             {
                 title: 'Về bên anh',
                 artist: 'Quý Lowkey',
-                src: '/music/vebenhanh.mp3',
+                src: '/music/vebenanh.mp3',
                 cover: '/meme/meme14.jpg'
             },
             {

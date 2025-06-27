@@ -35,6 +35,8 @@ function AdminDashboard({ setCurrentPage }) {
         avgOrderValue: 0,
     });
     const [chartData, setChartData] = useState([]);
+    const [vouchers, setVouchers] = useState(() => JSON.parse(localStorage.getItem('vouchers') || '[]'));
+    const [copiedCode, setCopiedCode] = useState('');
 
     useEffect(() => {
         const allOrders = JSON.parse(localStorage.getItem('orders') || '[]');
@@ -80,6 +82,7 @@ function AdminDashboard({ setCurrentPage }) {
         { key: 'changepass', label: 'Đổi mật khẩu', icon: '🔑' },
         { key: 'settings', label: 'Cài đặt chung', icon: '⚙️' },
         { key: 'admin-intro', label: 'Giới thiệu quyền Admin', icon: '🛡️' },
+        { key: 'vouchers', label: 'Quản lý voucher', icon: '🎁' },
     ];
 
     const renderContent = () => {
@@ -118,6 +121,8 @@ function AdminDashboard({ setCurrentPage }) {
                 return <SettingsTab />;
             case 'admin-intro':
                 return <Admin user={user} summary={summary} />;
+            case 'vouchers':
+                return <VoucherManagement vouchers={vouchers} setVouchers={setVouchers} users={users} onIssue={handleIssueVoucher} />;
             default:
                 return <DashboardView summary={summary} orders={orders} chartData={chartData} />;
         }
@@ -127,6 +132,18 @@ function AdminDashboard({ setCurrentPage }) {
         logout();
         setCurrentPage('home');
     }
+
+    const handleIssueVoucher = (voucher) => {
+        const updated = [...vouchers, voucher];
+        setVouchers(updated);
+        localStorage.setItem('vouchers', JSON.stringify(updated));
+    };
+
+    const handleCopy = (code) => {
+        navigator.clipboard.writeText(code);
+        setCopiedCode(code);
+        setTimeout(() => setCopiedCode(''), 1200);
+    };
 
     return (
         <div className={`admin-dashboard ${isSidebarOpen ? 'sidebar-open' : ''} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''} ${activeView === 'profile' ? 'cyber-glass-theme' : ''}`}>
@@ -695,6 +712,116 @@ function SettingsTab() {
                 Bật hiệu ứng hoa rơi trên toàn trang
               </div>
             </section>
+        </div>
+    );
+}
+
+// Voucher Management Component
+function VoucherManagement({ vouchers, setVouchers, users, onIssue }) {
+    const [showModal, setShowModal] = useState(false);
+    const [form, setForm] = useState({ code: '', type: 'freeship', value: '', maxDiscount: '', user: '', expiry: '' });
+    const [autoGift, setAutoGift] = useState(() => localStorage.getItem('autoGiftOff') !== 'true');
+    const [copiedCode, setCopiedCode] = useState('');
+
+    const handleToggleAutoGift = () => {
+        if (autoGift) {
+            localStorage.setItem('autoGiftOff', 'true');
+            setAutoGift(false);
+        } else {
+            localStorage.removeItem('autoGiftOff');
+            setAutoGift(true);
+        }
+        window.dispatchEvent(new Event('storage'));
+    };
+    const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+    const handleSubmit = e => {
+        e.preventDefault();
+        if (!form.code) return;
+        const voucher = { ...form, id: Date.now(), status: 'active' };
+        onIssue(voucher);
+        localStorage.setItem('pendingGiftVoucher', JSON.stringify(voucher));
+        setShowModal(false);
+        setForm({ code: '', type: 'freeship', value: '', maxDiscount: '', user: '', expiry: '' });
+    };
+    const handleDelete = id => {
+        const updated = vouchers.filter(v => v.id !== id);
+        setVouchers(updated);
+        localStorage.setItem('vouchers', JSON.stringify(updated));
+    };
+    const handleCopy = (code) => {
+        navigator.clipboard.writeText(code);
+        setCopiedCode(code);
+        setTimeout(() => setCopiedCode(''), 1200);
+    };
+
+    return (
+        <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap', marginTop: 24 }}>
+            <div style={{ width: '100%', marginBottom: 18, display: 'flex', justifyContent: 'flex-end' }}>
+                <button onClick={handleToggleAutoGift} style={{ background: autoGift ? '#e53935' : '#43a047', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 22px', fontWeight: 700, fontSize: 15, cursor: 'pointer', boxShadow: '0 2px 8px #1976d255', letterSpacing: '1px', transition: 'background 0.2s', minWidth: 220, display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span role="img" aria-label="gift">🎁</span>
+                    {autoGift ? 'Tắt phát quà tự động' : 'Bật phát quà tự động'}
+                    <span style={{fontWeight:600, fontSize:13, marginLeft:8, color:'#fff', opacity:0.8}}>{autoGift ? '(Đang bật)' : '(Đang tắt)'}</span>
+                </button>
+            </div>
+            {/* Bảng voucher bên trái */}
+            <div style={{ flex: 2, minWidth: 340, background: '#fff', borderRadius: 14, boxShadow: '0 2px 12px #e0e0e0', padding: 28 }}>
+                <div style={{ fontWeight: 800, fontSize: 22, color: '#1976d2', marginBottom: 18, letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span role="img" aria-label="gift">🎁</span> Quản lý voucher ({vouchers.length})
+                </div>
+                <table className="data-table" style={{ width: '100%', fontSize: 15, borderRadius: 8, overflow: 'hidden' }}>
+                    <thead>
+                        <tr style={{ background: '#f5f7fa', color: '#1976d2', fontWeight: 700 }}>
+                            <th>MÃ</th><th>LOẠI</th><th>GIÁ TRỊ</th><th>KHÁCH</th><th>HẠN</th><th>TRẠNG THÁI</th><th>THAO TÁC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {vouchers.map(v => (
+                            <tr key={v.id} style={{ background: '#fff', borderBottom: '1px solid #f0f0f0', transition: 'background 0.2s' }}>
+                                <td style={{ fontWeight: 700, color: '#1976d2', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                    {v.code}
+                                    <span style={{ cursor: 'pointer', fontSize: 18 }} title="Sao chép mã" onClick={() => handleCopy(v.code)}>📋</span>
+                                    {copiedCode === v.code && <span style={{ color: '#43a047', fontSize: 13, marginLeft: 4 }}>Đã sao chép!</span>}
+                                </td>
+                                <td>{v.type === 'freeship' ? <span style={{ color: '#43a047', fontWeight: 600 }}>Freeship</span> : v.type === 'percent' ? <span style={{ color: '#e65100', fontWeight: 600 }}>Giảm %</span> : <span style={{ color: '#0288d1', fontWeight: 600 }}>Giảm tiền</span>}</td>
+                                <td>{v.type === 'percent' ? v.value + '%' : v.type === 'freeship' ? 'Freeship' : Number(v.value).toLocaleString('vi-VN') + ' vnđ'}</td>
+                                <td>{v.user || <span style={{ color: '#888' }}>Tất cả</span>}</td>
+                                <td>{v.expiry}</td>
+                                <td><span style={{ color: v.status === 'active' ? '#43a047' : '#bdbdbd', fontWeight: 700 }}>{v.status}</span></td>
+                                <td><button className="btn-delete" style={{ background: '#e53935', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s' }} onClick={() => handleDelete(v.id)}>Xóa</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            {/* Form phát voucher bên phải */}
+            <div style={{ flex: 1, minWidth: 320, background: '#fff', borderRadius: 14, boxShadow: '0 2px 12px #e0e0e0', padding: 28, marginTop: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: 20, color: '#1976d2', marginBottom: 18, letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span role="img" aria-label="gift">🎁</span> Phát voucher
+                </div>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Mã voucher</div>
+                    <input name="code" value={form.code} onChange={handleChange} required placeholder="Nhập mã (ví dụ: GIFT123456)" style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd', transition: 'border 0.2s' }} />
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Loại</div>
+                    <select name="type" value={form.type} onChange={handleChange} style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd' }}>
+                        <option value="freeship">Freeship</option>
+                        <option value="percent">Giảm %</option>
+                        <option value="amount">Giảm tiền</option>
+                    </select>
+                    {form.type === 'percent' && <><div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Phần trăm (%)</div><input name="value" type="number" min="1" max="40" value={form.value} onChange={handleChange} required placeholder="Tối đa 40%" style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd' }} /></>}
+                    {form.type === 'amount' && <><div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Số tiền giảm (vnđ)</div><input name="value" type="number" min="1000" value={form.value} onChange={handleChange} required placeholder="Nhập số tiền" style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd' }} /></>}
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Khách nhận</div>
+                    <select name="user" value={form.user} onChange={handleChange} style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd' }}>
+                        <option value="">Tất cả</option>
+                        {users.map(u => <option key={u.email} value={u.email}>{u.name} ({u.email})</option>)}
+                    </select>
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Hạn dùng</div>
+                    <input name="expiry" type="date" value={form.expiry} onChange={handleChange} required style={{ padding: 12, borderRadius: 8, border: '1.5px solid #1976d2', fontSize: 15, marginBottom: 4, outline: 'none', fontWeight: 600, color: '#333', background: '#f7fafd' }} />
+                    <div style={{ display: 'flex', gap: 12, marginTop: 10 }}>
+                        <button type="button" className="btn-cancel" onClick={() => setShowModal(false)} style={{ background: '#e0e0e0', color: '#333', border: 'none', borderRadius: 8, padding: '10px 22px', fontWeight: 700, fontSize: 16, cursor: 'pointer', transition: 'background 0.2s' }}>Hủy</button>
+                        <button type="submit" className="btn-confirm" style={{ background: 'linear-gradient(90deg,#1976d2,#64b5f6)', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 22px', fontWeight: 700, fontSize: 16, cursor: 'pointer', boxShadow: '0 2px 8px #1976d255', letterSpacing: '1px', transition: 'background 0.2s' }}>Phát</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

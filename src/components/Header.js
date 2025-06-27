@@ -77,9 +77,30 @@ function Header({ setCurrentPage }) {
                 {isMobileMenuOpen && (
                   <>
                     <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+                    
                     <div className="navigation-head menu_mobile open_sidebar_menu">
                       <nav className="nav-horizontal">
                         <div className="account_mb">
+                                                <button
+                        className="close-mobile-menu"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        aria-label="Đóng menu"
+                        style={{
+                         
+                          position: 'absolute',
+                          top: 10,
+                          right: 15,
+                          background: 'none',
+                          border: 'none',
+                          fontSize: 28,
+                          color: 'white',
+                          cursor: 'pointer',
+                          padding: 0,
+                          lineHeight: 1,
+                          fontWeight: 300,
+                          zIndex: 1001
+                        }}
+                      >×</button>
                           {user ? (
                             <>
                               <div className="user-info-mobile">
